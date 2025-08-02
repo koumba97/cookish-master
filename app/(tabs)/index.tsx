@@ -1,5 +1,5 @@
 import TabView from '@/components/TabView';
-import { SearchBar } from '@/components/ui/searchBar';
+import { SearchBar } from '@/components/ui/SearchBar';
 import { UserAvatar } from '@/components/UserAvatar';
 import {
     SCREEN_PADDING,

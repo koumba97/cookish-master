@@ -11,5 +11,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 70,
         paddingHorizontal: 20,
+        fontFamily: 'Nunito',
     },
 });

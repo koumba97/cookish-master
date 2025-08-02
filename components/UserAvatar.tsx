@@ -1,6 +1,7 @@
 import { Colors } from '@/constants/Colors';
 import { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
+import AppText from './ui/AppText';
 
 interface Prop {
     showGreetings: boolean;
@@ -18,7 +19,7 @@ export function UserAvatar({ showGreetings }: Prop) {
         if (!showGreetings) {
             Animated.timing(opacityAnim, {
                 toValue: 0,
-                duration: 600,
+                duration: 300,
                 useNativeDriver: false,
             }).start();
             Animated.timing(widthAnim, {
@@ -41,7 +42,11 @@ export function UserAvatar({ showGreetings }: Prop) {
     };
     return (
         <View style={styles.userAvatarContainer}>
-            <View style={styles.avatar}></View>
+            <ImageBackground
+                source={require('../assets/images/koum-avatar.jpg')}
+                style={styles.avatar}
+                imageStyle={{ borderRadius: 50 }}
+            ></ImageBackground>
             <Animated.View
                 style={[
                     {
@@ -52,12 +57,12 @@ export function UserAvatar({ showGreetings }: Prop) {
                     styles.greetingsWrapper,
                 ]}
             >
-                <Text numberOfLines={1} style={styles.welcomeText}>
+                <AppText numberOfLines={1} style={styles.welcomeText}>
                     Welcome back,
-                </Text>
-                <Text numberOfLines={1} style={styles.userText}>
+                </AppText>
+                <AppText numberOfLines={1} style={styles.userText}>
                     Koum
-                </Text>
+                </AppText>
             </Animated.View>
         </View>
     );
@@ -82,8 +87,12 @@ const styles = StyleSheet.create({
         flexWrap: 'nowrap',
     },
     userText: {
-        fontSize: 24,
+        fontSize: 28,
+        padding: 0,
+        margin: 0,
         fontWeight: 700,
+        height: 30,
+        lineHeight: 32,
     },
     greetingsWrapper: {
         position: 'relative',
