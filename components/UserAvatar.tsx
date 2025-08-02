@@ -7,6 +7,10 @@ interface Prop {
     showGreetings: boolean;
 }
 export function UserAvatar({ showGreetings }: Prop) {
+    const WIDTH_ANIM_DURATION = 400;
+
+    const ANIM_START = 0;
+    const ANIM_END = 1;
     const opacityAnim = useRef(new Animated.Value(1)).current;
     const leftAnim = useRef(new Animated.Value(1)).current;
     const widthAnim = useRef(new Animated.Value(0)).current;
@@ -19,23 +23,23 @@ export function UserAvatar({ showGreetings }: Prop) {
         if (!showGreetings) {
             Animated.timing(opacityAnim, {
                 toValue: 0,
-                duration: 300,
+                duration: WIDTH_ANIM_DURATION,
                 useNativeDriver: false,
             }).start();
             Animated.timing(widthAnim, {
                 toValue: 0,
-                duration: 300,
+                duration: WIDTH_ANIM_DURATION,
                 useNativeDriver: false,
             }).start();
         } else {
             Animated.timing(opacityAnim, {
                 toValue: 1,
-                duration: 600,
+                duration: WIDTH_ANIM_DURATION,
                 useNativeDriver: false,
             }).start();
             Animated.timing(widthAnim, {
                 toValue: 200,
-                duration: 300,
+                duration: WIDTH_ANIM_DURATION,
                 useNativeDriver: false,
             }).start();
         }

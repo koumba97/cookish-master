@@ -17,7 +17,7 @@ interface Prop {
 
 const defaultWidth = screenWidth - SCREEN_PADDING * SIDES_COUNT;
 
-export function SearchBar({
+export default function SearchBar({
     visible = false,
     openWidth = defaultWidth,
     handleOpen,
@@ -25,6 +25,7 @@ export function SearchBar({
     const SEARCH_ICON_WIDTH = 60;
     const COLOR_ANIM_DURATION = 600;
     const WIDTH_ANIM_DURATION = 300;
+    const WIDTH_EXTEND_ANIM_DURATION = 600;
 
     const ANIM_START = 0;
     const ANIM_END = 1;
@@ -49,7 +50,7 @@ export function SearchBar({
         if (!isOpen) {
             Animated.timing(widthAnim, {
                 toValue: openWidth,
-                duration: WIDTH_ANIM_DURATION,
+                duration: WIDTH_EXTEND_ANIM_DURATION,
                 useNativeDriver: false,
             }).start();
 

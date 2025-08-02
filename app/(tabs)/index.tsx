@@ -1,6 +1,7 @@
 import TabView from '@/components/TabView';
+import AppText from '@/components/ui/AppText';
 import IconButton from '@/components/ui/IconButton';
-import { SearchBar } from '@/components/ui/SearchBar';
+import SearchBar from '@/components/ui/SearchBar';
 import { UserAvatar } from '@/components/UserAvatar';
 import {
     SCREEN_PADDING,
@@ -8,7 +9,7 @@ import {
     SIDES_COUNT,
 } from '@/constants/Dimensions';
 import { Category } from '@/types/category';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { EventProvider } from 'react-native-outside-press';
 
@@ -17,6 +18,8 @@ export default function HomeScreen() {
     const AVATAR_SEARCHBAR_GAP = 10;
     const [visibleGreetings, setVisibleGreetings] = useState(true);
     const [category, setCategory] = useState<Category>('popular');
+    const scrollRef = useRef<ScrollView>(null);
+
     const categories: Category[] = [
         'popular',
         'starter',
@@ -25,12 +28,34 @@ export default function HomeScreen() {
         'drink',
     ];
 
+    const categoryTitle = {
+        popular: 'Most Loved Recipes',
+        starter: 'Tasty Starters',
+        main: 'Delicious Main Courses',
+        dessert: 'Sweet Treats & Desserts',
+        drink: 'Refreshing Drinks',
+    };
+
+    const scrollToStart = () => {
+        scrollRef.current?.scrollTo({ x: 0, animated: true });
+    };
+
+    const scrollToEnd = () => {
+        scrollRef.current?.scrollToEnd({ animated: true });
+    };
+
     const handleSearchBar = (isOpen: boolean) => {
         setVisibleGreetings(!isOpen);
     };
 
     const handleCategory = (selectedCategory: Category) => {
         setCategory(selectedCategory);
+        if (selectedCategory === 'drink') {
+            scrollToEnd();
+        }
+        if (selectedCategory === 'popular') {
+            scrollToStart();
+        }
     };
     return (
         <EventProvider>
@@ -47,6 +72,7 @@ export default function HomeScreen() {
                     />
                 </View>
                 <ScrollView
+                    ref={scrollRef}
                     style={styles.categoryList}
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -60,6 +86,9 @@ export default function HomeScreen() {
                         />
                     ))}
                 </ScrollView>
+                <AppText style={styles.pageTitle}>
+                    {categoryTitle[category]}
+                </AppText>
             </TabView>
         </EventProvider>
     );
@@ -75,9 +104,12 @@ const styles = StyleSheet.create({
         paddingVertical: 30,
         marginHorizontal: -20,
         paddingHorizontal: 20,
-        flexDirection: 'row',
+        maxHeight: 140,
         gap: 10,
         overflowX: 'scroll',
-        flex: 1,
+    },
+    pageTitle: {
+        fontWeight: 700,
+        fontSize: 25,
     },
 });
