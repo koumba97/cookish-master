@@ -4,15 +4,24 @@ import {
     screenWidth,
     SIDES_COUNT,
 } from '@/constants/Dimensions';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Animated, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import OutsidePressHandler from 'react-native-outside-press';
 import SearchSVG from '../svg/Search';
 
 interface Prop {
     visible?: boolean;
+    openWidth?: number;
+    handleOpen?: (isOpen: boolean) => void;
 }
-export function SearchBar({ visible = false }: Prop) {
+
+const defaultWidth = screenWidth - SCREEN_PADDING * SIDES_COUNT;
+
+export function SearchBar({
+    visible = false,
+    openWidth = defaultWidth,
+    handleOpen,
+}: Prop) {
     const SEARCH_ICON_WIDTH = 60;
     const COLOR_ANIM_DURATION = 600;
     const WIDTH_ANIM_DURATION = 300;
@@ -22,23 +31,29 @@ export function SearchBar({ visible = false }: Prop) {
 
     const [isOpen, setIsOpen] = useState(visible);
     const widthAnim = useRef(new Animated.Value(SEARCH_ICON_WIDTH)).current;
-    const animValue = useRef(new Animated.Value(0)).current;
+    const colorValue = useRef(new Animated.Value(0)).current;
     const searchRef = useRef<View>(null);
 
-    var bgColor = animValue.interpolate({
+    const bgColor = colorValue.interpolate({
         inputRange: [ANIM_START, ANIM_END],
         outputRange: [Colors.TRANSPARENT, Colors.GREY100],
     });
 
+    useEffect(() => {
+        if (handleOpen) {
+            handleOpen(isOpen);
+        }
+    }, [isOpen]);
+
     const openSearchBar = () => {
         if (!isOpen) {
             Animated.timing(widthAnim, {
-                toValue: screenWidth - SCREEN_PADDING * SIDES_COUNT,
+                toValue: openWidth,
                 duration: WIDTH_ANIM_DURATION,
                 useNativeDriver: false,
             }).start();
 
-            Animated.timing(animValue, {
+            Animated.timing(colorValue, {
                 toValue: ANIM_END,
                 duration: COLOR_ANIM_DURATION,
                 useNativeDriver: false,
@@ -56,7 +71,7 @@ export function SearchBar({ visible = false }: Prop) {
                 useNativeDriver: false,
             }).start();
 
-            Animated.timing(animValue, {
+            Animated.timing(colorValue, {
                 toValue: ANIM_START,
                 duration: COLOR_ANIM_DURATION,
                 useNativeDriver: false,
@@ -86,8 +101,8 @@ export function SearchBar({ visible = false }: Prop) {
                 >
                     <View style={styles.searchIcon}>
                         <SearchSVG
-                            width={30}
-                            height={30}
+                            width={20}
+                            height={20}
                             viewBox="0 0 22 22"
                             color={Colors.GREY400}
                         />
@@ -109,7 +124,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
     },
     hiddenSearchBar: {
-        height: 50,
+        height: 40,
         paddingHorizontal: 10,
         justifyContent: 'center',
     },
@@ -117,7 +132,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.GREY100,
         borderRadius: 100,
         width: '100%',
-        height: 50,
+        height: 40,
         paddingHorizontal: 10,
         justifyContent: 'center',
         flexDirection: 'row',
