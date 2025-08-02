@@ -28,6 +28,8 @@ const tintColorDark = '#fff';
 export enum Colors {
     BRAND = '#FF7355',
 
+    TRANSPARENT = '#ffffff00',
+
     GREY100 = '#F0F0F0',
     GREY200 = '#DEDEDE',
     GREY300 = '#B2B2B2',

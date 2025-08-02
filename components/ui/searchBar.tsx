@@ -13,27 +13,34 @@ interface Prop {
     visible?: boolean;
 }
 export function SearchBar({ visible = false }: Prop) {
+    const SEARCH_ICON_WIDTH = 60;
+    const COLOR_ANIM_DURATION = 600;
+    const WIDTH_ANIM_DURATION = 300;
+
+    const ANIM_START = 0;
+    const ANIM_END = 1;
+
     const [isOpen, setIsOpen] = useState(visible);
-    const widthAnim = useRef(new Animated.Value(50)).current;
+    const widthAnim = useRef(new Animated.Value(SEARCH_ICON_WIDTH)).current;
     const animValue = useRef(new Animated.Value(0)).current;
     const searchRef = useRef<View>(null);
 
     var bgColor = animValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['#ffffff00', Colors.GREY100],
+        inputRange: [ANIM_START, ANIM_END],
+        outputRange: [Colors.TRANSPARENT, Colors.GREY100],
     });
 
     const openSearchBar = () => {
         if (!isOpen) {
             Animated.timing(widthAnim, {
                 toValue: screenWidth - SCREEN_PADDING * SIDES_COUNT,
-                duration: 300,
+                duration: WIDTH_ANIM_DURATION,
                 useNativeDriver: false,
             }).start();
 
             Animated.timing(animValue, {
-                toValue: 1,
-                duration: 600,
+                toValue: ANIM_END,
+                duration: COLOR_ANIM_DURATION,
                 useNativeDriver: false,
             }).start();
 
@@ -44,14 +51,14 @@ export function SearchBar({ visible = false }: Prop) {
     const closeSearchBar = () => {
         if (isOpen) {
             Animated.timing(widthAnim, {
-                toValue: 55,
-                duration: 300,
+                toValue: SEARCH_ICON_WIDTH,
+                duration: WIDTH_ANIM_DURATION,
                 useNativeDriver: false,
             }).start();
 
             Animated.timing(animValue, {
-                toValue: 0,
-                duration: 600,
+                toValue: ANIM_START,
+                duration: COLOR_ANIM_DURATION,
                 useNativeDriver: false,
             }).start();
 
