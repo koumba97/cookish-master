@@ -5,16 +5,28 @@ import {
     screenWidth,
     SIDES_COUNT,
 } from '@/constants/Dimensions';
+import { Recipe } from '@/types/recipe';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-export default function AvatarSearchBarSection() {
+interface Prop {
+    searchResults: (recipes: Recipe[], query: string | undefined) => void;
+}
+
+export default function AvatarSearchBarSection({ searchResults }: Prop) {
     const USER_AVATAR_WIDTH = 60;
     const AVATAR_SEARCHBAR_GAP = 10;
     const [visibleGreetings, setVisibleGreetings] = useState(true);
 
     const handleSearchBar = (isOpen: boolean) => {
         setVisibleGreetings(!isOpen);
+    };
+
+    const handleSearchResults = (
+        results: Recipe[],
+        query: string | undefined
+    ) => {
+        searchResults(results, query);
     };
 
     return (
@@ -27,6 +39,7 @@ export default function AvatarSearchBarSection() {
                         SCREEN_PADDING * SIDES_COUNT -
                         (USER_AVATAR_WIDTH + AVATAR_SEARCHBAR_GAP)
                     }
+                    searchResults={handleSearchResults}
                     handleOpen={handleSearchBar}
                 />
             </View>

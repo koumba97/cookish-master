@@ -4,6 +4,8 @@ import {
     screenWidth,
     SIDES_COUNT,
 } from '@/constants/Dimensions';
+import { Recipe } from '@/types/recipe';
+import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import OutsidePressHandler from 'react-native-outside-press';
@@ -12,6 +14,7 @@ import SearchSVG from '../svg/Search';
 interface Prop {
     visible?: boolean;
     openWidth?: number;
+    searchResults: (recipes: Recipe[], query: string | undefined) => void;
     handleOpen?: (isOpen: boolean) => void;
 }
 
@@ -20,6 +23,7 @@ const defaultWidth = screenWidth - SCREEN_PADDING * SIDES_COUNT;
 export default function SearchBar({
     visible = false,
     openWidth = defaultWidth,
+    searchResults,
     handleOpen,
 }: Prop) {
     const SEARCH_ICON_WIDTH = 60;
@@ -31,6 +35,8 @@ export default function SearchBar({
     const ANIM_END = 1;
 
     const [isOpen, setIsOpen] = useState(visible);
+    const [value, setValue] = useState('');
+    const [loading, setLoading] = useState(false);
     const widthAnim = useRef(new Animated.Value(SEARCH_ICON_WIDTH)).current;
     const colorValue = useRef(new Animated.Value(0)).current;
     const searchRef = useRef<View>(null);
@@ -45,6 +51,21 @@ export default function SearchBar({
             handleOpen(isOpen);
         }
     }, [isOpen]);
+
+    const fetchMeals = async (search = '') => {
+        try {
+            setLoading(true);
+            const res = await axios.get(
+                `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`
+            );
+            console.log(res.data.meals);
+            searchResults(res.data.meals || [], search);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const openSearchBar = () => {
         if (!isOpen) {
@@ -82,6 +103,12 @@ export default function SearchBar({
         }
     };
 
+    const handleChangeText = (text: string) => {
+        setValue(text);
+        console.log(text);
+        fetchMeals(text);
+    };
+
     return (
         <OutsidePressHandler onOutsidePress={closeSearchBar}>
             <Animated.View
@@ -112,6 +139,8 @@ export default function SearchBar({
                         <TextInput
                             style={styles.textInput}
                             placeholder="Search"
+                            value={value}
+                            onChangeText={handleChangeText}
                         ></TextInput>
                     ) : null}
                 </Pressable>
