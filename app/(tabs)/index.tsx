@@ -1,24 +1,14 @@
-import TabView from '@/components/TabView';
-import AppText from '@/components/ui/AppText';
-import IconButton from '@/components/ui/IconButton';
-import SearchBar from '@/components/ui/SearchBar';
-import { UserAvatar } from '@/components/UserAvatar';
-import {
-    SCREEN_PADDING,
-    screenWidth,
-    SIDES_COUNT,
-} from '@/constants/Dimensions';
+import CategoryList from '@/components/Home/CategoryList';
+import RecipeSuggestions from '@/components/Home/RecipeSuggestions';
+import PageView from '@/components/PageView';
+import { screenWidth } from '@/constants/Dimensions';
 import { Category } from '@/types/category';
-import { useRef, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { EventProvider } from 'react-native-outside-press';
 
 export default function HomeScreen() {
-    const USER_AVATAR_WIDTH = 60;
-    const AVATAR_SEARCHBAR_GAP = 10;
-    const [visibleGreetings, setVisibleGreetings] = useState(true);
     const [category, setCategory] = useState<Category>('popular');
-    const scrollRef = useRef<ScrollView>(null);
 
     const categories: Category[] = [
         'popular',
@@ -36,80 +26,44 @@ export default function HomeScreen() {
         drink: 'Refreshing Drinks',
     };
 
-    const scrollToStart = () => {
-        scrollRef.current?.scrollTo({ x: 0, animated: true });
+    const handleCategoryChange = (category: Category) => {
+        setCategory(category);
     };
 
-    const scrollToEnd = () => {
-        scrollRef.current?.scrollToEnd({ animated: true });
-    };
-
-    const handleSearchBar = (isOpen: boolean) => {
-        setVisibleGreetings(!isOpen);
-    };
-
-    const handleCategory = (selectedCategory: Category) => {
-        setCategory(selectedCategory);
-        if (selectedCategory === 'drink') {
-            scrollToEnd();
-        }
-        if (selectedCategory === 'popular') {
-            scrollToStart();
-        }
-    };
     return (
         <EventProvider>
-            <TabView>
-                <View style={styles.avatarSearchBarWrapper}>
-                    <UserAvatar showGreetings={visibleGreetings} />
-                    <SearchBar
-                        openWidth={
-                            screenWidth -
-                            SCREEN_PADDING * SIDES_COUNT -
-                            (USER_AVATAR_WIDTH + AVATAR_SEARCHBAR_GAP)
-                        }
-                        handleOpen={handleSearchBar}
-                    />
-                </View>
-                <ScrollView
-                    ref={scrollRef}
-                    style={styles.categoryList}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                >
-                    {categories.map((cat) => (
-                        <IconButton
-                            key={cat}
-                            category={cat}
-                            active={category === cat}
-                            onPress={handleCategory}
-                        />
-                    ))}
-                </ScrollView>
-                <AppText style={styles.pageTitle}>
-                    {categoryTitle[category]}
-                </AppText>
-            </TabView>
+            <PageView>
+                <CategoryList
+                    currentCategory={category}
+                    list={categories}
+                    onCategoryChange={handleCategoryChange}
+                />
+
+                <RecipeSuggestions currentCategory={category} />
+            </PageView>
         </EventProvider>
     );
 }
 
 const styles = StyleSheet.create({
-    avatarSearchBarWrapper: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    categoryList: {
-        paddingVertical: 30,
-        marginHorizontal: -20,
-        paddingHorizontal: 20,
-        maxHeight: 140,
-        gap: 10,
-        overflowX: 'scroll',
-    },
     pageTitle: {
         fontWeight: 700,
         fontSize: 25,
+    },
+    contentPageView: {
+        //paddingTop: 100,
+    },
+    topContainer: {
+        left: 20,
+        width: screenWidth - 20 * 2,
+        position: 'absolute',
+        top: 50,
+        zIndex: 2,
+    },
+    scrollContent: {
+        backgroundColor: 'white',
+        paddingHorizontal: 20,
+        paddingTop: 80,
+        height: 170,
     },
 });

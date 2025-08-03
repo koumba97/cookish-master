@@ -117,9 +117,8 @@ const styles = StyleSheet.create({
     iconButton: {
         height: 70,
         width: 70,
-        backgroundColor: '#FFE3DD',
         borderRadius: 20,
-
+        backgroundColor: Colors.GREY100,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -133,6 +132,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 5,
         color: Colors.GREY300,
+        textTransform: 'capitalize',
     },
     activeCategoryName: {
         color: Colors.GREY500,
