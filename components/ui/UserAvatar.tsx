@@ -1,7 +1,7 @@
 import { Colors } from '@/constants/Colors';
 import { useEffect, useRef } from 'react';
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
-import AppText from './ui/AppText';
+import AppText from './AppText';
 
 interface Prop {
     showGreetings: boolean;
@@ -47,7 +47,7 @@ export function UserAvatar({ showGreetings }: Prop) {
     return (
         <View style={styles.userAvatarContainer}>
             <ImageBackground
-                source={require('../assets/images/koum-avatar.jpg')}
+                source={require('../../assets/images/koum-avatar.jpg')}
                 style={styles.avatar}
                 imageStyle={{ borderRadius: 50 }}
             ></ImageBackground>

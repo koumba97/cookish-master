@@ -1,7 +1,8 @@
 import { Recipe } from '@/types/recipe';
 import { PropsWithChildren, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import AvatarSearchBarSection from './Home/AvatarSearchBarSection';
+import SearchResults from './SearchResults';
 
 export default function PageView({ children }: PropsWithChildren) {
     const [searchResults, setSearchResults] = useState<Recipe[] | undefined>(
@@ -20,26 +21,25 @@ export default function PageView({ children }: PropsWithChildren) {
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <ScrollView
-                style={styles.topPageContent}
+                style={[
+                    styles.topPageContent,
+                    searchQuery && { maxHeight: 140 },
+                ]}
                 scrollEnabled={false}
                 showsVerticalScrollIndicator={false}
             >
                 <AvatarSearchBarSection searchResults={handleSearchResults} />
             </ScrollView>
-            <ScrollView
-                style={styles.pageViewContent}
-                showsVerticalScrollIndicator={false}
-            >
-                {searchResults && searchQuery ? (
-                    <View>
-                        {searchResults.map((result) => {
-                            return <Text>{result.strMeal}</Text>;
-                        })}
-                    </View>
-                ) : (
+            {searchResults && searchQuery ? (
+                <SearchResults results={searchResults} />
+            ) : (
+                <ScrollView
+                    style={styles.pageViewContent}
+                    showsVerticalScrollIndicator={false}
+                >
                     <View style={styles.tabView}>{children}</View>
-                )}
-            </ScrollView>
+                </ScrollView>
+            )}
         </View>
     );
 }
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
         paddingBottom: 30,
     },
     topPageContent: {
-        backgroundColor: 'white',
         height: 180,
         paddingHorizontal: 20,
         paddingTop: 80,

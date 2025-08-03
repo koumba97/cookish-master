@@ -1,5 +1,5 @@
-import SearchBar from '@/components/ui/SearchBar';
-import { UserAvatar } from '@/components/UserAvatar';
+import SearchBar from '@/components/SearchBar';
+import { UserAvatar } from '@/components/ui/UserAvatar';
 import {
     SCREEN_PADDING,
     screenWidth,

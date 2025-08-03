@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import OutsidePressHandler from 'react-native-outside-press';
-import SearchSVG from '../svg/Search';
+import SearchSVG from './svg/Search';
 
 interface Prop {
     visible?: boolean;
