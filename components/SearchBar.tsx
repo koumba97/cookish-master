@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import OutsidePressHandler from 'react-native-outside-press';
+import CloseSVG from './svg/Close';
 import SearchSVG from './svg/Search';
 
 interface Prop {
@@ -58,7 +59,7 @@ export default function SearchBar({
             const res = await axios.get(
                 `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`
             );
-            console.log(res.data.meals);
+            //console.log(res.data.meals);
             searchResults(res.data.meals || [], search);
         } catch (err) {
             console.error(err);
@@ -86,7 +87,7 @@ export default function SearchBar({
     };
 
     const closeSearchBar = () => {
-        if (isOpen) {
+        if (isOpen && !value) {
             Animated.timing(widthAnim, {
                 toValue: SEARCH_ICON_WIDTH,
                 duration: WIDTH_ANIM_DURATION,
@@ -98,14 +99,17 @@ export default function SearchBar({
                 duration: COLOR_ANIM_DURATION,
                 useNativeDriver: false,
             }).start();
-
             setIsOpen(false);
         }
     };
 
+    const closeSearch = () => {
+        handleChangeText('');
+        closeSearchBar();
+    };
+
     const handleChangeText = (text: string) => {
         setValue(text);
-        console.log(text);
         fetchMeals(text);
     };
 
@@ -127,7 +131,7 @@ export default function SearchBar({
                     }
                     onPress={openSearchBar}
                 >
-                    <View style={styles.searchIcon}>
+                    <View style={styles.svgIcon}>
                         <SearchSVG
                             width={20}
                             height={20}
@@ -143,6 +147,20 @@ export default function SearchBar({
                             onChangeText={handleChangeText}
                         ></TextInput>
                     ) : null}
+                    <Pressable
+                        style={[
+                            styles.svgIcon,
+                            { display: isOpen ? 'flex' : 'none' },
+                        ]}
+                        onPress={closeSearch}
+                    >
+                        <CloseSVG
+                            width={15}
+                            height={15}
+                            viewBox="5 0 120 120"
+                            color={Colors.BRAND}
+                        />
+                    </Pressable>
                 </Pressable>
             </Animated.View>
         </OutsidePressHandler>
@@ -173,7 +191,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily: 'Nunito',
     },
-    searchIcon: {
+    svgIcon: {
         justifyContent: 'center',
     },
 });

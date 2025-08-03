@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/Colors';
 import { Recipe } from '@/types/recipe';
 import { useEffect, useState } from 'react';
 import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
@@ -26,7 +27,7 @@ export default function SearchResults({ results }: Prop) {
                                     style={styles.image}
                                     imageStyle={{ borderRadius: 20 }}
                                 ></ImageBackground>
-                                <AppText style={styles.name}>
+                                <AppText style={styles.name} numberOfLines={1}>
                                     {result.strMeal}
                                 </AppText>
                             </View>
@@ -40,8 +41,9 @@ export default function SearchResults({ results }: Prop) {
 
 const styles = StyleSheet.create({
     resultContainer: {
-        borderWidth: 2,
-        top: 20,
+        borderTopWidth: 1,
+        borderColor: Colors.GREY200,
+        top: 0,
         flex: 1,
         paddingBottom: 30,
     },
@@ -54,13 +56,17 @@ const styles = StyleSheet.create({
     resultItem: {
         paddingVertical: 10,
         paddingHorizontal: 20,
-        borderWidth: 2,
+        borderBottomWidth: 1,
+        borderColor: Colors.GREY200,
         flexDirection: 'row',
         gap: 10,
         alignItems: 'center',
     },
     name: {
         fontSize: 20,
+        fontWeight: 600,
+        flex: 1,
+        overflow: 'hidden',
     },
     image: {
         width: 60,
