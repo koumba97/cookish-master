@@ -1,18 +1,18 @@
-import { Recipe } from '@/types/recipe';
+import { RecipeResult } from '@/types/Recipe';
 import { PropsWithChildren, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import AvatarSearchBarSection from './Home/AvatarSearchBarSection';
 import SearchResults from './SearchResults';
 
 export default function PageView({ children }: PropsWithChildren) {
-    const [searchResults, setSearchResults] = useState<Recipe[] | undefined>(
-        undefined
-    );
+    const [searchResults, setSearchResults] = useState<
+        RecipeResult[] | undefined
+    >(undefined);
     const [searchQuery, setSearchQuery] = useState<string | undefined>(
         undefined
     );
     const handleSearchResults = (
-        results: Recipe[],
+        results: RecipeResult[],
         query: string | undefined
     ) => {
         setSearchResults(results);

@@ -1,9 +1,12 @@
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
-import { Stack, useNavigation } from 'expo-router';
+import { useNavigation } from 'expo-router';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import HomeScreen from './screens/index';
 
 export default function RootLayout() {
+    const Stack = createNativeStackNavigator();
     const [loaded] = useFonts({
         SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
         Nunito: require('../assets/fonts/Nunito-Regular.ttf'),
@@ -11,29 +14,25 @@ export default function RootLayout() {
     const navigation = useNavigation();
 
     useEffect(() => {
-        const parent = navigation.getParent(); // c'est le Tab.Navigator parent
-        parent?.setOptions({ tabBarStyle: { display: 'none' } }); // cache la tab bar
+        const parent = navigation.getParent();
+        parent?.setOptions({ tabBarStyle: { display: 'none' } });
 
         return () => {
-            parent?.setOptions({ tabBarStyle: undefined }); // remet la tab bar quand tu pars
+            parent?.setOptions({ tabBarStyle: undefined });
         };
     }, []);
 
     if (!loaded) {
-        // Async font loading only occurs in development.
         return null;
     }
 
     return (
-        <>
-            <Stack
-                screenOptions={{
-                    headerShown: false,
-                }}
-            >
-                <Stack.Screen name="(tabs)" options={{}} />
-                <Stack.Screen name="+not-found" options={{}} />
-            </Stack>
-        </>
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{ headerShown: false }}
+            />
+        </Stack.Navigator>
     );
 }

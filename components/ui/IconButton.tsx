@@ -1,5 +1,5 @@
 import { Colors } from '@/constants/Colors';
-import { Category } from '@/types/category';
+import { Category } from '@/types/Category';
 import { PropsWithChildren, useEffect, useRef } from 'react';
 import {
     Animated,

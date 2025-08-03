@@ -1,5 +1,5 @@
 import IconButton from '@/components/ui/IconButton';
-import { Category } from '@/types/category';
+import { Category } from '@/types/Category';
 import { useRef, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 

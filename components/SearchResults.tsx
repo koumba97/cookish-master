@@ -1,16 +1,16 @@
 import { Colors } from '@/constants/Colors';
-import { Recipe } from '@/types/recipe';
+import { RecipeResult } from '@/types/Recipe';
 import { useEffect, useState } from 'react';
 import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
 import AppText from './ui/AppText';
 
 interface Prop {
-    results: Recipe[];
+    results: RecipeResult[];
 }
 export default function SearchResults({ results }: Prop) {
-    const [searchResults, setSearchResults] = useState<Recipe[] | undefined>(
-        undefined
-    );
+    const [searchResults, setSearchResults] = useState<
+        RecipeResult[] | undefined
+    >(undefined);
 
     useEffect(() => {
         setSearchResults(results);
@@ -21,7 +21,7 @@ export default function SearchResults({ results }: Prop) {
                 <ScrollView>
                     {searchResults.map((result) => {
                         return (
-                            <View style={styles.resultItem}>
+                            <View style={styles.resultItem} key={result.idMeal}>
                                 <ImageBackground
                                     source={{ uri: result.strMealThumb }}
                                     style={styles.image}

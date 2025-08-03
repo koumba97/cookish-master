@@ -1,30 +1,15 @@
 import CategoryList from '@/components/Home/CategoryList';
 import RecipeSuggestions from '@/components/Home/RecipeSuggestions';
 import PageView from '@/components/PageView';
+import { categories } from '@/constants/Category';
 import { screenWidth } from '@/constants/Dimensions';
-import { Category } from '@/types/category';
+import { Category } from '@/types/Category';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { EventProvider } from 'react-native-outside-press';
 
 export default function HomeScreen() {
     const [category, setCategory] = useState<Category>('popular');
-
-    const categories: Category[] = [
-        'popular',
-        'starter',
-        'main',
-        'dessert',
-        'drink',
-    ];
-
-    const categoryTitle = {
-        popular: 'Most Loved Recipes',
-        starter: 'Tasty Starters',
-        main: 'Delicious Main Courses',
-        dessert: 'Sweet Treats & Desserts',
-        drink: 'Refreshing Drinks',
-    };
 
     const handleCategoryChange = (category: Category) => {
         setCategory(category);

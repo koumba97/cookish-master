@@ -5,12 +5,12 @@ import {
     screenWidth,
     SIDES_COUNT,
 } from '@/constants/Dimensions';
-import { Recipe } from '@/types/recipe';
+import { RecipeResult } from '@/types/Recipe';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 interface Prop {
-    searchResults: (recipes: Recipe[], query: string | undefined) => void;
+    searchResults: (recipes: RecipeResult[], query: string | undefined) => void;
 }
 
 export default function AvatarSearchBarSection({ searchResults }: Prop) {
@@ -23,7 +23,7 @@ export default function AvatarSearchBarSection({ searchResults }: Prop) {
     };
 
     const handleSearchResults = (
-        results: Recipe[],
+        results: RecipeResult[],
         query: string | undefined
     ) => {
         searchResults(results, query);

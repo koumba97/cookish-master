@@ -1,7 +1,7 @@
 import AppText from '@/components/ui/AppText';
 import { Colors } from '@/constants/Colors';
 import { SCREEN_PADDING, screenWidth } from '@/constants/Dimensions';
-import { Category } from '@/types/category';
+import { Category } from '@/types/Category';
 import { StyleSheet, View } from 'react-native';
 
 interface Prop {

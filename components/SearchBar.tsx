@@ -4,7 +4,7 @@ import {
     screenWidth,
     SIDES_COUNT,
 } from '@/constants/Dimensions';
-import { Recipe } from '@/types/recipe';
+import { RecipeResult } from '@/types/Recipe';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Pressable, StyleSheet, TextInput, View } from 'react-native';
@@ -15,7 +15,7 @@ import SearchSVG from './svg/Search';
 interface Prop {
     visible?: boolean;
     openWidth?: number;
-    searchResults: (recipes: Recipe[], query: string | undefined) => void;
+    searchResults: (recipes: RecipeResult[], query: string | undefined) => void;
     handleOpen?: (isOpen: boolean) => void;
 }
 
@@ -59,7 +59,6 @@ export default function SearchBar({
             const res = await axios.get(
                 `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`
             );
-            //console.log(res.data.meals);
             searchResults(res.data.meals || [], search);
         } catch (err) {
             console.error(err);
