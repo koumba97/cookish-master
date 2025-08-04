@@ -1,12 +1,14 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
-import { useNavigation } from 'expo-router';
+import { Stack, useNavigation } from 'expo-router';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-import HomeScreen from './screens/index';
+
+export type RootStackParamList = {
+    Home: undefined;
+    Recipe: { recipeId: number };
+};
 
 export default function RootLayout() {
-    const Stack = createNativeStackNavigator();
     const [loaded] = useFonts({
         SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
         Nunito: require('../assets/fonts/Nunito-Regular.ttf'),
@@ -26,13 +28,5 @@ export default function RootLayout() {
         return null;
     }
 
-    return (
-        <Stack.Navigator>
-            <Stack.Screen
-                name="Home"
-                component={HomeScreen}
-                options={{ headerShown: false }}
-            />
-        </Stack.Navigator>
-    );
+    return <Stack screenOptions={{ headerShown: false }} />;
 }

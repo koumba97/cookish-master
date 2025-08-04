@@ -1,13 +1,23 @@
+import { RootStackParamList } from '@/app/_layout';
 import { Colors } from '@/constants/Colors';
 import { RecipeResult } from '@/types/Recipe';
+import { router, useNavigation } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
+import {
+    ImageBackground,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import AppText from './ui/AppText';
 
 interface Prop {
     results: RecipeResult[];
 }
+
 export default function SearchResults({ results }: Prop) {
+    const navigation = useNavigation<RootStackParamList>();
     const [searchResults, setSearchResults] = useState<
         RecipeResult[] | undefined
     >(undefined);
@@ -15,13 +25,24 @@ export default function SearchResults({ results }: Prop) {
     useEffect(() => {
         setSearchResults(results);
     }, [results]);
+
+    const handleRedirectRecipe = (recipeId: string) => {
+        router.push(`/recipe/${recipeId}`);
+    };
+
     return (
         <View style={styles.resultContainer}>
             {searchResults ? (
                 <ScrollView>
                     {searchResults.map((result) => {
                         return (
-                            <View style={styles.resultItem} key={result.idMeal}>
+                            <TouchableOpacity
+                                style={styles.resultItem}
+                                key={result.idMeal}
+                                onPress={() =>
+                                    handleRedirectRecipe(result.idMeal)
+                                }
+                            >
                                 <ImageBackground
                                     source={{ uri: result.strMealThumb }}
                                     style={styles.image}
@@ -30,7 +51,7 @@ export default function SearchResults({ results }: Prop) {
                                 <AppText style={styles.name} numberOfLines={1}>
                                     {result.strMeal}
                                 </AppText>
-                            </View>
+                            </TouchableOpacity>
                         );
                     })}
                 </ScrollView>
@@ -56,6 +77,7 @@ const styles = StyleSheet.create({
     resultItem: {
         paddingVertical: 10,
         paddingHorizontal: 20,
+        borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: Colors.GREY200,
         flexDirection: 'row',
