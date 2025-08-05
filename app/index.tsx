@@ -4,8 +4,6 @@ import PageView from '@/components/PageView';
 import { categories } from '@/constants/Category';
 import { screenWidth } from '@/constants/Dimensions';
 import { Category } from '@/types/Category';
-import { Button } from '@react-navigation/elements';
-import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { EventProvider } from 'react-native-outside-press';
@@ -25,8 +23,6 @@ export default function HomeScreen() {
                     list={categories}
                     onCategoryChange={handleCategoryChange}
                 />
-                <Button onPress={() => router.push('/test')}>Test</Button>
-
                 <RecipeSuggestions currentCategory={category} />
             </PageView>
         </EventProvider>

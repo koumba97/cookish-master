@@ -8,7 +8,6 @@ interface Prop {
 }
 export function UserAvatar({ showGreetings }: Prop) {
     const WIDTH_ANIM_DURATION = 400;
-
     const ANIM_START = 0;
     const ANIM_END = 1;
     const opacityAnim = useRef(new Animated.Value(1)).current;

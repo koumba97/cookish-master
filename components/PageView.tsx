@@ -19,11 +19,19 @@ export default function PageView({ children }: PropsWithChildren) {
         setSearchQuery(query);
     };
     return (
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <View
+            style={{
+                flex: 1,
+                backgroundColor: 'white',
+                justifyContent: 'space-around',
+            }}
+        >
             <ScrollView
                 style={[
                     styles.topPageContent,
-                    searchQuery && { maxHeight: 140 },
+                    searchQuery && {
+                        maxHeight: 140,
+                    },
                 ]}
                 scrollEnabled={false}
                 showsVerticalScrollIndicator={false}

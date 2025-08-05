@@ -35,7 +35,7 @@ export default function AvatarSearchBarSection({ searchResults }: Prop) {
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <View>
             <View style={styles.avatarSearchBarWrapper}>
                 {currentRoute.length > 0 ? (
                     <TouchableOpacity onPress={() => router.back()}>
