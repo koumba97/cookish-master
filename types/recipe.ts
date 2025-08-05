@@ -22,7 +22,7 @@ export type Recipe = {
 };
 
 export type ingredient = {
-    ingredient: string;
+    name: string;
     measure: string | null;
 };
 export type idMeal = string & { __brand: 'numeric' };

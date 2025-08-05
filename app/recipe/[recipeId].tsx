@@ -1,13 +1,14 @@
-import PageView from '@/components/PageView';
+import IngredientsPreview from '@/components/Recipe/IngredientsPreview';
 import AppText from '@/components/ui/AppText';
+import BackButton from '@/components/ui/BackButton';
+import LikeButton from '@/components/ui/LikeButton';
 import { screenWidth } from '@/constants/Dimensions';
 import { useRecipeIngredients } from '@/hooks/useRecipeIngredients';
 import { Recipe } from '@/types/Recipe';
 import axios from 'axios';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ImageBackground, StyleSheet } from 'react-native';
-import { EventProvider } from 'react-native-outside-press';
+import { ImageBackground, StyleSheet, View } from 'react-native';
 
 export default function RecipeScreen() {
     const { recipeId } = useLocalSearchParams<{ recipeId: string }>();
@@ -33,20 +34,30 @@ export default function RecipeScreen() {
         }
     };
     return (
-        <EventProvider>
-            <PageView>
-                <ImageBackground
-                    source={{ uri: recipe.image }}
-                    style={styles.recipeImg}
-                    imageStyle={{ borderRadius: 50 }}
-                ></ImageBackground>
+        <View>
+            <ImageBackground
+                source={{ uri: recipe.image }}
+                style={styles.recipeImg}
+            >
+                <View style={styles.buttonsWrapper}>
+                    <BackButton />
+                    <LikeButton isLiked={false} />
+                </View>
+            </ImageBackground>
 
+            <View style={styles.recipeContainer}>
                 <AppText style={styles.recipeName}>{recipe.name}</AppText>
+                <View style={styles.ingredientsContainer}>
+                    {recipe.ingredients ? (
+                        <IngredientsPreview ingredients={recipe.ingredients} />
+                    ) : null}
+                </View>
+
                 <AppText style={styles.instructions}>
                     {recipe.instructions}
                 </AppText>
-            </PageView>
-        </EventProvider>
+            </View>
+        </View>
     );
 }
 
@@ -54,13 +65,53 @@ const styles = StyleSheet.create({
     recipeName: {
         fontSize: 28,
         fontWeight: 700,
+        marginBottom: 20,
+    },
+    recipeContainer: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
     },
     instructions: {
         fontSize: 16,
     },
     recipeImg: {
-        width: screenWidth - 20 * 2,
-        height: 300,
-        marginBottom: 20,
+        width: screenWidth,
+        height: 400,
+        marginBottom: -40,
+        paddingTop: 50,
+        paddingHorizontal: 20,
+    },
+    ingredientsContainer: {
+        gap: 5,
+    },
+    ingredientContainer: {
+        flexDirection: 'row',
+        gap: 10,
+        alignItems: 'center',
+    },
+    ingredientImg: {
+        width: 70,
+        height: 70,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 1,
+    },
+    ingredientTextsWrapper: {
+        //gap: 10,
+    },
+    ingredientText: {
+        fontSize: 20,
+    },
+    measureText: {
+        fontSize: 14,
+    },
+    buttonsWrapper: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
 });

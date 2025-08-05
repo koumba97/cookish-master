@@ -9,7 +9,7 @@ export function useRecipeIngredients(recipe: any): Recipe {
 
         if (ingredient) {
             ingredients.push({
-                ingredient,
+                name: ingredient,
                 measure: measure || '',
             });
         }
