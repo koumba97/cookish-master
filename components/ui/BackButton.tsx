@@ -1,4 +1,3 @@
-import { Colors } from '@/constants/Colors';
 import { router } from 'expo-router';
 import { PropsWithChildren } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
         height: 50,
         width: 50,
         borderRadius: 40,
-        backgroundColor: Colors.GREY100,
+        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
     },

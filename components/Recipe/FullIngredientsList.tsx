@@ -1,38 +1,51 @@
 import AppText from '@/components/ui/AppText';
 import { screenWidth } from '@/constants/Dimensions';
-import { useIngredientImage } from '@/hooks/useIngredientImage';
+import { getIngredientImage } from '@/hooks/useIngredientImage';
 import { ingredient } from '@/types/Recipe';
+import { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 
 interface Prop {
     ingredients: ingredient[];
 }
 export default function FullIngredientsList({ ingredients }: Prop) {
+    const [ingredientImages, setIngredientImages] = useState<string[]>([]);
+
+    useEffect(() => {
+        const fetchImages = async () => {
+            const urls = await Promise.all(
+                ingredients.map((ingredient) =>
+                    getIngredientImage(ingredient.name)
+                )
+            );
+            setIngredientImages(urls);
+        };
+
+        fetchImages();
+    }, [ingredients]);
+
     return (
-        <>
-            <AppText>Ingredients</AppText>
-            <View style={styles.ingredientsContainer}>
-                {ingredients.map((ingredient, index) => (
-                    <View style={styles.ingredientContainer}>
-                        <ImageBackground
-                            source={{
-                                uri: useIngredientImage(ingredient.name),
-                            }}
-                            style={styles.ingredientImg}
-                            imageStyle={{ borderRadius: 50 }}
-                        />
-                        <View style={styles.ingredientTextsWrapper}>
-                            <AppText style={styles.ingredientText}>
-                                {ingredient.name}
-                            </AppText>
-                            <AppText style={styles.measureText}>
-                                {ingredient.measure}
-                            </AppText>
-                        </View>
+        <View style={styles.ingredientsContainer}>
+            {ingredients.map((ingredient, index) => (
+                <View style={styles.ingredientContainer} key={index}>
+                    <ImageBackground
+                        source={{
+                            uri: ingredientImages[index],
+                        }}
+                        style={styles.ingredientImg}
+                        imageStyle={{ borderRadius: 50 }}
+                    />
+                    <View style={styles.ingredientTextsWrapper}>
+                        <AppText style={styles.ingredientText}>
+                            {ingredient.name}
+                        </AppText>
+                        <AppText style={styles.measureText}>
+                            {ingredient.measure}
+                        </AppText>
                     </View>
-                ))}
-            </View>
-        </>
+                </View>
+            ))}
+        </View>
     );
 }
 

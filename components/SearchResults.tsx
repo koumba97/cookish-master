@@ -27,7 +27,7 @@ export default function SearchResults({ results }: Prop) {
     }, [results]);
 
     const handleRedirectRecipe = (recipeId: string) => {
-        router.push(`/recipe/${recipeId}`);
+        router.push(`/recipe/${recipeId}/instructions`);
     };
 
     return (

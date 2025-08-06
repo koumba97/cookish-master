@@ -1,4 +1,4 @@
-import IngredientsPreview from '@/components/Recipe/IngredientsPreview';
+import FullIngredientsList from '@/components/Recipe/FullIngredientsList';
 import AppText from '@/components/ui/AppText';
 import BackButton from '@/components/ui/BackButton';
 import LikeButton from '@/components/ui/LikeButton';
@@ -8,12 +8,12 @@ import { Recipe } from '@/types/Recipe';
 import axios from 'axios';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ImageBackground, StyleSheet, View } from 'react-native';
+import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
 
-export default function RecipeScreen() {
+export default function RecipIngredientsScreen() {
     const { recipeId } = useLocalSearchParams<{ recipeId: string }>();
     const [loading, setLoading] = useState(false);
-    const [recipe, setRecipe] = useState<Recipe>({});
+    const [recipe, setRecipe] = useState<Recipe>({} as Recipe);
 
     useEffect(() => {
         fetchRecipe(recipeId);
@@ -34,7 +34,7 @@ export default function RecipeScreen() {
         }
     };
     return (
-        <View>
+        <ScrollView>
             <ImageBackground
                 source={{ uri: recipe.image }}
                 style={styles.recipeImg}
@@ -44,20 +44,16 @@ export default function RecipeScreen() {
                     <LikeButton isLiked={false} />
                 </View>
             </ImageBackground>
-
             <View style={styles.recipeContainer}>
                 <AppText style={styles.recipeName}>{recipe.name}</AppText>
+                <AppText style={styles.ingredientTitle}>Ingredients</AppText>
                 <View style={styles.ingredientsContainer}>
                     {recipe.ingredients ? (
-                        <IngredientsPreview ingredients={recipe.ingredients} />
+                        <FullIngredientsList ingredients={recipe.ingredients} />
                     ) : null}
                 </View>
-
-                <AppText style={styles.instructions}>
-                    {recipe.instructions}
-                </AppText>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
@@ -66,6 +62,9 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: 700,
         marginBottom: 20,
+    },
+    ingredientTitle: {
+        fontSize: 20,
     },
     recipeContainer: {
         backgroundColor: 'white',

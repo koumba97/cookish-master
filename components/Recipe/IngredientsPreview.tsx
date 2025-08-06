@@ -1,8 +1,9 @@
 import AppText from '@/components/ui/AppText';
 import { Colors } from '@/constants/Colors';
 import { screenWidth } from '@/constants/Dimensions';
-import { useIngredientImage } from '@/hooks/useIngredientImage';
+import { getIngredientImage } from '@/hooks/useIngredientImage';
 import { ingredient } from '@/types/Recipe';
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
     ImageBackground,
@@ -13,27 +14,42 @@ import {
 
 interface Prop {
     ingredients: ingredient[];
+    recipeId: string;
 }
-export default function IngredientsPreview({ ingredients }: Prop) {
+export default function IngredientsPreview({ ingredients, recipeId }: Prop) {
     const [visibleIngredients, setVisibleIngredients] = useState<ingredient[]>(
         []
     );
+    const [ingredientImages, setIngredientImages] = useState<string[]>([]);
+
     useEffect(() => {
         if (ingredients.length >= 4) {
             setVisibleIngredients(ingredients.slice(0, 4));
         } else {
             setVisibleIngredients(ingredients);
         }
+
+        const fetchImages = async () => {
+            const urls = await Promise.all(
+                visibleIngredients.map((ingredient) =>
+                    getIngredientImage(ingredient.name)
+                )
+            );
+            setIngredientImages(urls);
+        };
+
+        fetchImages();
     }, [ingredients]);
+
     return (
         <View style={styles.ingredientsPreviewContainer}>
             <AppText style={styles.ingredientsSectionText}>Ingredients</AppText>
             <View style={styles.ingredientsContainer}>
                 {visibleIngredients.map((ingredient, index) => (
-                    <View style={styles.ingredientContainer}>
+                    <View style={styles.ingredientContainer} key={index}>
                         <ImageBackground
                             source={{
-                                uri: useIngredientImage(ingredient.name),
+                                uri: ingredientImages[index],
                             }}
                             style={styles.ingredientImg}
                             imageStyle={{ borderRadius: 50 }}
@@ -42,7 +58,12 @@ export default function IngredientsPreview({ ingredients }: Prop) {
                 ))}
 
                 {ingredients.length >= 5 ? (
-                    <TouchableOpacity style={styles.hiddenIngredientsContainer}>
+                    <TouchableOpacity
+                        style={styles.hiddenIngredientsContainer}
+                        onPress={() =>
+                            router.push(`/recipe/${recipeId}/ingredients`)
+                        }
+                    >
                         <AppText style={styles.hiddenIngredientsText}>
                             +{ingredients.length - 4}
                         </AppText>
