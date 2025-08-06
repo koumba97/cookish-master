@@ -4,15 +4,19 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import HeartSVG from '../svg/Heart';
 interface Prop {
     isLiked: boolean;
+    handleLike?: (liked: boolean) => {};
 }
 
-export default function LikeButton({ isLiked }: Prop) {
+export default function LikeButton({ isLiked, handleLike }: Prop) {
     const [liked, setLiked] = useState(isLiked);
-    const handleLike = () => {
+    const onLike = () => {
         setLiked(!liked);
+        if (handleLike) {
+            handleLike(!liked);
+        }
     };
     return (
-        <TouchableOpacity style={styles.likeButton} onPress={handleLike}>
+        <TouchableOpacity style={styles.likeButton} onPress={onLike}>
             <HeartSVG
                 width={30}
                 height={30}

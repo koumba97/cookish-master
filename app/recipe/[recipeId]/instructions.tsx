@@ -3,25 +3,41 @@ import AppText from '@/components/ui/AppText';
 import BackButton from '@/components/ui/BackButton';
 import LikeButton from '@/components/ui/LikeButton';
 import { screenWidth } from '@/constants/Dimensions';
+import { recipeIsLiked, toggleLikeRecipe } from '@/hooks/useLikeRecipe';
 import { useRecipeIngredients } from '@/hooks/useRecipeIngredients';
 import { Recipe } from '@/types/Recipe';
 import axios from 'axios';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
+import {
+    ImageBackground,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
 
 export default function RecipeInstructionsScreen() {
     const { recipeId } = useLocalSearchParams<{ recipeId: string }>();
-    const [loading, setLoading] = useState(false);
+    const [loadingLike, setLoadingLike] = useState(true);
+    const [loadingRecipe, setLoadingRecipe] = useState(true);
     const [recipe, setRecipe] = useState<Recipe>({} as Recipe);
+    const [isLiked, setIsLiked] = useState<boolean>(false);
 
     useEffect(() => {
-        fetchRecipe(recipeId);
+        const initialize = async () => {
+            setLoadingLike(true);
+            await fetchRecipe(recipeId);
+            const liked = await recipeIsLiked(recipeId);
+            setIsLiked(liked);
+            setLoadingLike(false);
+        };
+        initialize();
     }, [recipeId]);
 
     const fetchRecipe = async (recipeId: string) => {
         try {
-            setLoading(true);
+            setLoadingRecipe(true);
             const res = await axios.get(
                 `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`
             );
@@ -30,9 +46,19 @@ export default function RecipeInstructionsScreen() {
         } catch (err) {
             console.error(err);
         } finally {
-            setLoading(false);
+            setLoadingRecipe(false);
         }
     };
+
+    async function toggleLike() {
+        const likeState = await toggleLikeRecipe(recipeId);
+        setIsLiked(likeState);
+    }
+
+    if (loadingLike || loadingRecipe) {
+        return <Text>loading</Text>;
+    }
+
     return (
         <ScrollView>
             <ImageBackground
@@ -41,7 +67,8 @@ export default function RecipeInstructionsScreen() {
             >
                 <View style={styles.buttonsWrapper}>
                     <BackButton />
-                    <LikeButton isLiked={false} />
+
+                    <LikeButton isLiked={isLiked} handleLike={toggleLike} />
                 </View>
             </ImageBackground>
 
