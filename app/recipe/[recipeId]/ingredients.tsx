@@ -3,25 +3,41 @@ import AppText from '@/components/ui/AppText';
 import BackButton from '@/components/ui/BackButton';
 import LikeButton from '@/components/ui/LikeButton';
 import { screenWidth } from '@/constants/Dimensions';
+import { recipeIsLiked } from '@/hooks/useLikeRecipe';
 import { useRecipeIngredients } from '@/hooks/useRecipeIngredients';
 import { Recipe } from '@/types/Recipe';
 import axios from 'axios';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
+import {
+    ImageBackground,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
 
 export default function RecipIngredientsScreen() {
     const { recipeId } = useLocalSearchParams<{ recipeId: string }>();
-    const [loading, setLoading] = useState(false);
+    const [loadingRecipe, setLoadingRecipe] = useState(false);
+    const [loadingLike, setLoadingLike] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
     const [recipe, setRecipe] = useState<Recipe>({} as Recipe);
 
     useEffect(() => {
-        fetchRecipe(recipeId);
+        const initialize = async () => {
+            setLoadingLike(true);
+            await fetchRecipe(recipeId);
+            const liked = await recipeIsLiked(recipeId);
+            setIsLiked(liked);
+            setLoadingLike(false);
+        };
+        initialize();
     }, [recipeId]);
 
     const fetchRecipe = async (recipeId: string) => {
         try {
-            setLoading(true);
+            setLoadingRecipe(true);
             const res = await axios.get(
                 `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`
             );
@@ -30,9 +46,13 @@ export default function RecipIngredientsScreen() {
         } catch (err) {
             console.error(err);
         } finally {
-            setLoading(false);
+            setLoadingRecipe(false);
         }
     };
+    if (loadingLike || loadingRecipe) {
+        return <Text>loading</Text>;
+    }
+
     return (
         <ScrollView>
             <ImageBackground
@@ -41,7 +61,7 @@ export default function RecipIngredientsScreen() {
             >
                 <View style={styles.buttonsWrapper}>
                     <BackButton />
-                    <LikeButton isLiked={false} />
+                    <LikeButton isLiked={isLiked} />
                 </View>
             </ImageBackground>
             <View style={styles.recipeContainer}>
