@@ -1,4 +1,6 @@
+import CalendarButton from '@/components/Recipe/CalendarButton';
 import IngredientsPreview from '@/components/Recipe/IngredientsPreview';
+import VideoButton from '@/components/Recipe/VideoButton';
 import AppText from '@/components/ui/AppText';
 import { useRecipeContext } from '@/contexts/RecipeContext';
 import { useLocalSearchParams } from 'expo-router';
@@ -21,7 +23,10 @@ export default function RecipeInstructionsScreen() {
                 ) : null}
             </View>
 
-            <View style={styles.addToCalendarContainer}></View>
+            <CalendarButton />
+            {recipe.youtubeLink ? (
+                <VideoButton link={recipe.youtubeLink} />
+            ) : null}
 
             <AppText style={styles.instructions}>{recipe.instructions}</AppText>
         </View>
@@ -75,7 +80,7 @@ const styles = StyleSheet.create({
 
     addToCalendarContainer: {
         height: 100,
-        backgroundColor: 'lightblue',
+        backgroundColor: '#A0B3FF',
         borderRadius: 20,
         marginBottom: 20,
     },

@@ -61,7 +61,10 @@ export default function IngredientsPreview({ ingredients, recipeId }: Prop) {
                             imageStyle={{ borderRadius: 20 }}
                         />
                         <View style={styles.ingredientTextsWrapper}>
-                            <AppText style={styles.ingredientText}>
+                            <AppText
+                                style={styles.ingredientText}
+                                numberOfLines={1}
+                            >
                                 {ingredient.name}
                             </AppText>
                             {/* <AppText style={styles.measureText}>
@@ -127,8 +130,9 @@ const styles = StyleSheet.create({
         //gap: 10,
     },
     ingredientText: {
-        fontSize: 10,
+        fontSize: 12,
         textAlign: 'center',
+        maxWidth: 65,
     },
     measureText: {
         fontSize: 10,
