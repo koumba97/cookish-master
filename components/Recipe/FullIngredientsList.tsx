@@ -33,7 +33,7 @@ export default function FullIngredientsList({ ingredients }: Prop) {
                             uri: ingredientImages[index],
                         }}
                         style={styles.ingredientImg}
-                        imageStyle={{ borderRadius: 50 }}
+                        imageStyle={{ borderRadius: 20 }}
                     />
                     <View style={styles.ingredientTextsWrapper}>
                         <AppText style={styles.ingredientText}>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     ingredientsContainer: {
-        gap: 5,
+        gap: 10,
     },
     ingredientContainer: {
         flexDirection: 'row',

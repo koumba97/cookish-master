@@ -1,4 +1,3 @@
-import AppText from '@/components/ui/AppText';
 import { Colors } from '@/constants/Colors';
 import { screenWidth } from '@/constants/Dimensions';
 import { getIngredientImage } from '@/hooks/useIngredientImage';
@@ -11,27 +10,20 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import ChevronRightSVG from '../svg/ChevronRight';
+import AppText from '../ui/AppText';
 
 interface Prop {
     ingredients: ingredient[];
     recipeId: string;
 }
 export default function IngredientsPreview({ ingredients, recipeId }: Prop) {
-    const [visibleIngredients, setVisibleIngredients] = useState<ingredient[]>(
-        []
-    );
     const [ingredientImages, setIngredientImages] = useState<string[]>([]);
 
     useEffect(() => {
-        if (ingredients.length >= 4) {
-            setVisibleIngredients(ingredients.slice(0, 4));
-        } else {
-            setVisibleIngredients(ingredients);
-        }
-
         const fetchImages = async () => {
             const urls = await Promise.all(
-                visibleIngredients.map((ingredient) =>
+                ingredients.map((ingredient) =>
                     getIngredientImage(ingredient.name)
                 )
             );
@@ -43,20 +35,41 @@ export default function IngredientsPreview({ ingredients, recipeId }: Prop) {
 
     return (
         <View style={styles.ingredientsPreviewContainer}>
-            <AppText style={styles.ingredientsSectionText}>Ingredients</AppText>
+            <TouchableOpacity
+                style={styles.ingredientsTitleWrapper}
+                onPress={() => router.push(`/recipe/${recipeId}/ingredients`)}
+            >
+                <AppText style={styles.ingredientsSectionText}>
+                    Ingredients
+                </AppText>
+                <View>
+                    <ChevronRightSVG
+                        width={20}
+                        height={24}
+                        viewBox="-2 0 10 10"
+                    />
+                </View>
+            </TouchableOpacity>
             <View style={styles.ingredientsContainer}>
-                {visibleIngredients.map((ingredient, index) => (
+                {ingredients.slice(0, 4).map((ingredient, index) => (
                     <View style={styles.ingredientContainer} key={index}>
                         <ImageBackground
                             source={{
                                 uri: ingredientImages[index],
                             }}
                             style={styles.ingredientImg}
-                            imageStyle={{ borderRadius: 50 }}
+                            imageStyle={{ borderRadius: 20 }}
                         />
+                        <View style={styles.ingredientTextsWrapper}>
+                            <AppText style={styles.ingredientText}>
+                                {ingredient.name}
+                            </AppText>
+                            {/* <AppText style={styles.measureText}>
+                            {ingredient.measure}
+                        </AppText> */}
+                        </View>
                     </View>
                 ))}
-
                 {ingredients.length >= 5 ? (
                     <TouchableOpacity
                         style={styles.hiddenIngredientsContainer}
@@ -78,32 +91,47 @@ const styles = StyleSheet.create({
     ingredientsPreviewContainer: {
         marginBottom: 30,
     },
-    ingredientsSectionText: {
-        fontSize: 20,
-    },
     recipeImg: {
         width: screenWidth - 20 * 2,
         height: 300,
         marginBottom: 20,
     },
-    ingredientsContainer: {
-        gap: 5,
+    ingredientsTitleWrapper: {
+        alignItems: 'flex-start',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+    },
+    ingredientsSectionText: {
+        fontSize: 22,
+        marginBottom: 10,
+    },
+    ingredientsContainer: {
+        gap: 10,
+        flexDirection: 'row',
     },
     ingredientContainer: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         gap: 10,
         alignItems: 'center',
-        width: 60,
-        height: 60,
+    },
+    ingredientImg: {
+        width: 65,
+        height: 65,
         backgroundColor: 'white',
         borderRadius: 20,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 1,
-        verticalAlign: 'middle',
+    },
+    ingredientTextsWrapper: {
+        //gap: 10,
+    },
+    ingredientText: {
+        fontSize: 10,
+        textAlign: 'center',
+    },
+    measureText: {
+        fontSize: 10,
     },
     hiddenIngredientsContainer: {
         backgroundColor: Colors.GREY300,
@@ -121,19 +149,5 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: 700,
         color: 'white',
-    },
-    ingredientImg: {
-        width: 50,
-        height: 50,
-        margin: 'auto',
-    },
-    ingredientTextsWrapper: {
-        //gap: 10,
-    },
-    ingredientText: {
-        fontSize: 20,
-    },
-    measureText: {
-        fontSize: 14,
     },
 });
