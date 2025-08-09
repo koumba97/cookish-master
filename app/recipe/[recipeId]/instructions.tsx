@@ -23,10 +23,12 @@ export default function RecipeInstructionsScreen() {
                 ) : null}
             </View>
 
-            <CalendarButton />
-            {recipe.youtubeLink ? (
-                <VideoButton link={recipe.youtubeLink} />
-            ) : null}
+            <View style={styles.buttonsWrapper}>
+                <CalendarButton isSmall={recipe.youtubeLink ? true : false} />
+                {recipe.youtubeLink ? (
+                    <VideoButton link={recipe.youtubeLink} />
+                ) : null}
+            </View>
 
             <AppText style={styles.instructions}>{recipe.instructions}</AppText>
         </View>
@@ -83,5 +85,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#A0B3FF',
         borderRadius: 20,
         marginBottom: 20,
+    },
+    buttonsWrapper: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
 });

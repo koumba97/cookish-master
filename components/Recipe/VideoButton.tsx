@@ -10,12 +10,12 @@ interface Prop {
 export default function VideoButton({ link }: PropsWithChildren & Prop) {
     return (
         <TouchableOpacity
-            style={styles.addToCalendarContainer}
+            style={[styles.videoContainer, styles.small]}
             onPress={() => Linking.openURL(link)}
         >
             <PlaySVG
-                width={40}
-                height={40}
+                width={25}
+                height={25}
                 viewBox="0 0 25 25"
                 color={Colors.GREY500}
             />
@@ -26,8 +26,8 @@ export default function VideoButton({ link }: PropsWithChildren & Prop) {
 }
 
 const styles = StyleSheet.create({
-    addToCalendarContainer: {
-        height: 60,
+    videoContainer: {
+        height: 50,
         backgroundColor: Colors.GREY100,
         borderRadius: 20,
         marginBottom: 20,
@@ -37,9 +37,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
 
+    small: {},
+
     buttonText: {
         color: Colors.GREY500,
-        fontSize: 24,
+        fontSize: 14,
         fontWeight: 800,
     },
 });

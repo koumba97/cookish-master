@@ -1,10 +1,20 @@
 import FullIngredientsList from '@/components/Recipe/FullIngredientsList';
 import AppText from '@/components/ui/AppText';
 import { useRecipeContext } from '@/contexts/RecipeContext';
+import { useLocalSearchParams } from 'expo-router';
+import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-export default function RecipIngredientsScreen() {
+export default function RecipeIngredientsScreen() {
     const { recipe } = useRecipeContext();
+    const { recipeId, action } = useLocalSearchParams<{
+        recipeId: string;
+        action: 'view' | 'select';
+    }>();
+
+    useEffect(() => {
+        console.log(action);
+    }, []);
 
     return (
         <View style={styles.recipeContainer}>

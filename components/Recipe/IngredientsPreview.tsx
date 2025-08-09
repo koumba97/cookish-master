@@ -37,7 +37,9 @@ export default function IngredientsPreview({ ingredients, recipeId }: Prop) {
         <View style={styles.ingredientsPreviewContainer}>
             <TouchableOpacity
                 style={styles.ingredientsTitleWrapper}
-                onPress={() => router.push(`/recipe/${recipeId}/ingredients`)}
+                onPress={() =>
+                    router.push(`/recipe/${recipeId}/view/ingredients`)
+                }
             >
                 <AppText style={styles.ingredientsSectionText}>
                     Ingredients
@@ -77,7 +79,7 @@ export default function IngredientsPreview({ ingredients, recipeId }: Prop) {
                     <TouchableOpacity
                         style={styles.hiddenIngredientsContainer}
                         onPress={() =>
-                            router.push(`/recipe/${recipeId}/ingredients`)
+                            router.push(`/recipe/${recipeId}/view/ingredients`)
                         }
                     >
                         <AppText style={styles.hiddenIngredientsText}>
