@@ -1,3 +1,4 @@
+import CalendarModal from '@/components/Recipe/CalendarModal';
 import CalendarSVG from '@/components/svg/Calendar';
 import CheckSVG from '@/components/svg/Check';
 import CloseSVG from '@/components/svg/Close';
@@ -100,7 +101,6 @@ export default function RecipeLayout() {
                         </View>
                     </View>
                 </ImageBackground>
-
                 <Slot />
             </ScrollView>
             <IngredientsScreenButtons recipe={recipe} route={route} />
@@ -116,11 +116,15 @@ function IngredientsScreenButtons({
     recipe,
     route,
 }: IngredientsScreenButtonsProps) {
+    const [isModalCalendarVisible, setModalCalendarVisible] = useState(false);
     const handleCancelIngredientsSelect = () => {
         router.setParams({ action: 'view' });
     };
-    const handleAddToCalendar = () => {
+    const goToSelectScreen = () => {
         router.setParams({ action: 'select' });
+    };
+    const handleAddToCalendar = (visible: boolean) => {
+        setModalCalendarVisible(visible);
     };
     return (
         <ScrollView
@@ -134,22 +138,6 @@ function IngredientsScreenButtons({
             {route[3] == 'ingredients' ? (
                 route[2] == 'select' ? (
                     <View style={styles.ingredientsButtonsWrapper}>
-                        <AppButton
-                            color={Colors.GREEN300}
-                            textColor="white"
-                            onPress={handleAddToCalendar}
-                            icon={
-                                <CheckSVG
-                                    width={20}
-                                    height={20}
-                                    viewBox={'1 -3 25 25'}
-                                    color="white"
-                                />
-                            }
-                        >
-                            Confirm
-                        </AppButton>
-
                         <AppButton
                             color={Colors.RED300}
                             textColor="white"
@@ -165,12 +153,27 @@ function IngredientsScreenButtons({
                         >
                             Cancel
                         </AppButton>
+                        <AppButton
+                            color={Colors.BLUE300}
+                            textColor="white"
+                            onPress={() => handleAddToCalendar(true)}
+                            icon={
+                                <CheckSVG
+                                    width={20}
+                                    height={20}
+                                    viewBox={'1 -3 25 25'}
+                                    color="white"
+                                />
+                            }
+                        >
+                            Continue
+                        </AppButton>
                     </View>
                 ) : route[2] === 'view' ? (
                     <AppButton
                         color="#4D97FF"
                         textColor="white"
-                        onPress={handleAddToCalendar}
+                        onPress={goToSelectScreen}
                         icon={
                             <CalendarSVG
                                 width={30}
@@ -184,6 +187,11 @@ function IngredientsScreenButtons({
                     </AppButton>
                 ) : null
             ) : null}
+
+            <CalendarModal
+                visible={isModalCalendarVisible}
+                hide={() => setModalCalendarVisible(false)}
+            />
         </ScrollView>
     );
 }

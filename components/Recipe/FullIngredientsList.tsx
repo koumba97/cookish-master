@@ -66,7 +66,10 @@ export default function FullIngredientsList({
                         checkedIngredients.includes(ingredient.name) &&
                         selectable
                             ? styles.selectedIngredient
-                            : null,
+                            : !checkedIngredients.includes(ingredient.name) &&
+                                selectable
+                              ? styles.nonSelectedIngredient
+                              : null,
                     ]}
                     key={index}
                     onPress={() =>
@@ -143,6 +146,9 @@ const styles = StyleSheet.create({
         margin: -5,
         padding: 5,
         borderRadius: 20,
+    },
+    nonSelectedIngredient: {
+        opacity: 0.5,
     },
     ingredientTextsWrapper: {
         //gap: 10,

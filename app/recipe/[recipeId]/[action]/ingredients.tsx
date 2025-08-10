@@ -14,7 +14,11 @@ export default function RecipeIngredientsScreen() {
     return (
         <View style={styles.recipeContainer}>
             <AppText style={styles.recipeName}>{recipe.name}</AppText>
-            <AppText style={styles.ingredientTitle}>Ingredients</AppText>
+            <AppText style={styles.ingredientTitle}>
+                {action === 'view'
+                    ? 'Ingredients'
+                    : 'Select the ingredients you’re missing'}
+            </AppText>
 
             <View style={styles.ingredientsContainer}>
                 {recipe.ingredients ? (
@@ -35,7 +39,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     ingredientTitle: {
-        fontSize: 22,
+        fontSize: 21,
         marginBottom: 14,
     },
     recipeContainer: {
