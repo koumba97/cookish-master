@@ -6,7 +6,7 @@ import AppText from '@/components/ui/AppText';
 import { Colors } from '@/constants/Colors';
 import { useRecipeContext } from '@/contexts/RecipeContext';
 import { useLocalSearchParams } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 
 export default function RecipeInstructionsScreen() {
     const { recipeId } = useLocalSearchParams<{ recipeId: string }>();
@@ -40,7 +40,7 @@ export default function RecipeInstructionsScreen() {
                                 color={Colors.GREY500}
                             />
                         }
-                        link={recipe.youtubeLink}
+                        onPress={() => Linking.openURL(recipe.youtubeLink)}
                     >
                         Watch the video
                     </AppButton>

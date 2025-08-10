@@ -1,3 +1,4 @@
+import CalendarSVG from '@/components/svg/Calendar';
 import CloseSVG from '@/components/svg/Close';
 import StarSVG from '@/components/svg/Star';
 import AppButton from '@/components/ui/AppButton';
@@ -74,9 +75,6 @@ export default function RecipeLayout() {
         return <Text>loading</Text>;
     }
 
-    const handleCancelIngredientsSelect = () => {
-        router.setParams({ action: 'view' });
-    };
     return (
         <RecipeContext.Provider value={{ recipe, isLiked }}>
             <ScrollView>
@@ -103,16 +101,36 @@ export default function RecipeLayout() {
 
                 <Slot />
             </ScrollView>
+            <IngredientsScreenButtons recipe={recipe} route={route} />
+        </RecipeContext.Provider>
+    );
+}
 
-            {route[2] == 'select' ? (
-                <ScrollView
-                    style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        right: 20,
-                        alignSelf: 'flex-end',
-                    }}
-                >
+interface IngredientsScreenButtonsProps {
+    recipe: Recipe;
+    route: string[];
+}
+function IngredientsScreenButtons({
+    recipe,
+    route,
+}: IngredientsScreenButtonsProps) {
+    const handleCancelIngredientsSelect = () => {
+        router.setParams({ action: 'view' });
+    };
+    const handleAddToCalendar = () => {
+        router.setParams({ action: 'select' });
+    };
+    return (
+        <ScrollView
+            style={{
+                position: 'absolute',
+                bottom: 0,
+                right: 20,
+                alignSelf: 'flex-end',
+            }}
+        >
+            {route[3] == 'ingredients' ? (
+                route[2] == 'select' ? (
                     <AppButton
                         color="#F63C3C"
                         textColor="white"
@@ -128,9 +146,25 @@ export default function RecipeLayout() {
                     >
                         Cancel
                     </AppButton>
-                </ScrollView>
+                ) : route[2] === 'view' ? (
+                    <AppButton
+                        color="#4D97FF"
+                        textColor="white"
+                        onPress={handleAddToCalendar}
+                        icon={
+                            <CalendarSVG
+                                width={30}
+                                height={30}
+                                viewBox={'0 0 18 18'}
+                                color="white"
+                            />
+                        }
+                    >
+                        Add to calendar
+                    </AppButton>
+                ) : null
             ) : null}
-        </RecipeContext.Provider>
+        </ScrollView>
     );
 }
 

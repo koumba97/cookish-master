@@ -1,4 +1,3 @@
-import { AddToCalendar } from '@/components/Recipe/CalendarButton';
 import FullIngredientsList from '@/components/Recipe/FullIngredientsList';
 import AppText from '@/components/ui/AppText';
 import { useRecipeContext } from '@/contexts/RecipeContext';
@@ -16,7 +15,7 @@ export default function RecipeIngredientsScreen() {
         <View style={styles.recipeContainer}>
             <AppText style={styles.recipeName}>{recipe.name}</AppText>
             <AppText style={styles.ingredientTitle}>Ingredients</AppText>
-            <AddToCalendar />
+
             <View style={styles.ingredientsContainer}>
                 {recipe.ingredients ? (
                     <FullIngredientsList

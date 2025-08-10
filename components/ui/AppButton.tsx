@@ -3,7 +3,7 @@ import { PropsWithChildren, ReactElement } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import AppText from '../ui/AppText';
 interface Prop {
-    onPress?: () => {};
+    onPress?: () => void;
     color?: string;
     textColor?: string;
     icon?: ReactElement;
