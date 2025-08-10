@@ -3,7 +3,12 @@ import { screenWidth } from '@/constants/Dimensions';
 import { getIngredientImage } from '@/hooks/useIngredientImage';
 import { ingredient } from '@/types/Recipe';
 import { useEffect, useState } from 'react';
-import { ImageBackground, StyleSheet, View } from 'react-native';
+import {
+    ImageBackground,
+    StyleSheet,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import Checkbox from '../ui/CheckBox';
 
 interface Prop {
@@ -31,8 +36,6 @@ export default function FullIngredientsList({
     }, [ingredients]);
 
     const handleIngredientCheck = (name: string, checked: boolean) => {
-        console.log(name, checked);
-
         if (checked) {
             if (!checkedIngredients.includes(name)) {
                 const ingredientsArray = [...checkedIngredients, name];
@@ -57,7 +60,22 @@ export default function FullIngredientsList({
     return (
         <View style={styles.ingredientsContainer}>
             {ingredients.map((ingredient, index) => (
-                <View style={styles.ingredientContainer} key={index}>
+                <TouchableOpacity
+                    style={[
+                        styles.ingredientContainer,
+                        checkedIngredients.includes(ingredient.name) &&
+                        selectable
+                            ? styles.selectedIngredient
+                            : null,
+                    ]}
+                    key={index}
+                    onPress={() =>
+                        handleIngredientCheck(
+                            ingredient.name,
+                            !checkedIngredients.includes(ingredient.name)
+                        )
+                    }
+                >
                     <View style={styles.imgTextWrapper}>
                         <ImageBackground
                             source={{
@@ -84,7 +102,7 @@ export default function FullIngredientsList({
                             name={ingredient.name}
                         />
                     ) : null}
-                </View>
+                </TouchableOpacity>
             ))}
         </View>
     );
@@ -102,7 +120,7 @@ const styles = StyleSheet.create({
         gap: 10,
     },
     ingredientsContainer: {
-        gap: 10,
+        gap: 15,
     },
     ingredientContainer: {
         flexDirection: 'row',
@@ -119,6 +137,12 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 1,
+    },
+    selectedIngredient: {
+        backgroundColor: '#C4EAF670',
+        margin: -5,
+        padding: 5,
+        borderRadius: 20,
     },
     ingredientTextsWrapper: {
         //gap: 10,

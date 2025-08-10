@@ -1,10 +1,12 @@
 import CalendarSVG from '@/components/svg/Calendar';
+import CheckSVG from '@/components/svg/Check';
 import CloseSVG from '@/components/svg/Close';
 import StarSVG from '@/components/svg/Star';
 import AppButton from '@/components/ui/AppButton';
 import AppText from '@/components/ui/AppText';
 import BackButton from '@/components/ui/BackButton';
 import LikeButton from '@/components/ui/LikeButton';
+import { Colors } from '@/constants/Colors';
 import { screenWidth } from '@/constants/Dimensions';
 import { RecipeContext } from '@/contexts/RecipeContext';
 import { recipeIsLiked, toggleLikeRecipe } from '@/hooks/useLikeRecipe';
@@ -131,21 +133,39 @@ function IngredientsScreenButtons({
         >
             {route[3] == 'ingredients' ? (
                 route[2] == 'select' ? (
-                    <AppButton
-                        color="#F63C3C"
-                        textColor="white"
-                        onPress={handleCancelIngredientsSelect}
-                        icon={
-                            <CloseSVG
-                                width={25}
-                                height={25}
-                                viewBox="0 -2 150 150"
-                                color="white"
-                            />
-                        }
-                    >
-                        Cancel
-                    </AppButton>
+                    <View style={styles.ingredientsButtonsWrapper}>
+                        <AppButton
+                            color={Colors.GREEN300}
+                            textColor="white"
+                            onPress={handleAddToCalendar}
+                            icon={
+                                <CheckSVG
+                                    width={20}
+                                    height={20}
+                                    viewBox={'1 -3 25 25'}
+                                    color="white"
+                                />
+                            }
+                        >
+                            Confirm
+                        </AppButton>
+
+                        <AppButton
+                            color={Colors.RED300}
+                            textColor="white"
+                            onPress={handleCancelIngredientsSelect}
+                            icon={
+                                <CloseSVG
+                                    width={25}
+                                    height={25}
+                                    viewBox="0 -2 150 150"
+                                    color="white"
+                                />
+                            }
+                        >
+                            Cancel
+                        </AppButton>
+                    </View>
                 ) : route[2] === 'view' ? (
                     <AppButton
                         color="#4D97FF"
@@ -178,6 +198,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingLeft: 20,
+    },
+
+    ingredientsButtonsWrapper: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: screenWidth - 20 * 2,
     },
     recipeImg: {
         width: screenWidth,

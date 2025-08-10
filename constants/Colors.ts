@@ -15,5 +15,9 @@ export enum Colors {
     BLUE400 = '#2B77E1',
     BLUE500 = '#1D3DA9',
 
+    RED300 = '#F63C3C',
+
+    GREEN300 = '#43BB29',
+
     DEFAULTTEXT = '#494949',
 }
