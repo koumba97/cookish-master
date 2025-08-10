@@ -1,13 +1,6 @@
-import * as Calendar from 'expo-calendar';
 import { router } from 'expo-router';
 import { PropsWithChildren } from 'react';
-import {
-    Alert,
-    Button,
-    StyleSheet,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import AddSVG from '../svg/Add';
 import CalendarSVG from '../svg/Calendar';
 import AppText from '../ui/AppText';
@@ -60,56 +53,6 @@ export default function CalendarButton({
     );
 }
 
-export function AddToCalendar() {
-    async function getDefaultCalendarId() {
-        const calendars = await Calendar.getCalendarsAsync(
-            Calendar.EntityTypes.EVENT
-        );
-
-        // Trouve le calendrier par défaut de l'iPhone
-        const defaultCalendar = calendars.find(
-            (cal) => cal.source && cal.source.name === 'Default'
-        );
-
-        if (defaultCalendar) {
-            return defaultCalendar.id;
-        }
-
-        // Sinon, utilise le premier calendrier trouvé
-        return calendars[0]?.id;
-    }
-
-    async function addEventToCalendar() {
-        const { status } = await Calendar.requestCalendarPermissionsAsync();
-        if (status !== 'granted') {
-            Alert.alert('Permission refusée');
-            return;
-        }
-
-        const calendarId = await getDefaultCalendarId();
-        if (!calendarId) {
-            Alert.alert('Aucun calendrier trouvé');
-            return;
-        }
-
-        const start = new Date();
-        start.setMinutes(start.getMinutes() + 5); // commence dans 5 min
-        const end = new Date(start);
-        end.setMinutes(end.getMinutes() + 60); // dure 1h
-
-        await Calendar.createEventAsync(calendarId, {
-            title: 'Mon super événement',
-            startDate: start,
-            endDate: end,
-            timeZone: 'Europe/Paris',
-            location: 'Paris',
-            notes: 'Événement ajouté depuis mon app',
-        });
-
-        alert('Événement ajouté ✅');
-    }
-    return <Button title="test" onPress={addEventToCalendar} />;
-}
 const styles = StyleSheet.create({
     addToCalendarContainer: {
         height: 50,

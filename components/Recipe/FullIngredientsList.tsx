@@ -1,5 +1,6 @@
 import AppText from '@/components/ui/AppText';
 import { screenWidth } from '@/constants/Dimensions';
+import { useRecipeContext } from '@/contexts/RecipeContext';
 import { getIngredientImage } from '@/hooks/useIngredientImage';
 import { ingredient } from '@/types/Recipe';
 import { useEffect, useState } from 'react';
@@ -20,6 +21,7 @@ export default function FullIngredientsList({
     selectable = false,
 }: Prop) {
     const [ingredientImages, setIngredientImages] = useState<string[]>([]);
+    const { selectedIngredients, setSelectedIngredients } = useRecipeContext();
     const [checkedIngredients, setCheckedIngredient] = useState<string[]>([]);
 
     useEffect(() => {
@@ -36,25 +38,27 @@ export default function FullIngredientsList({
     }, [ingredients]);
 
     const handleIngredientCheck = (name: string, checked: boolean) => {
+        let newCheckedIngredients: string[] = [];
+
         if (checked) {
             if (!checkedIngredients.includes(name)) {
-                const ingredientsArray = [...checkedIngredients, name];
-                setCheckedIngredient(ingredientsArray);
+                newCheckedIngredients = [...checkedIngredients, name];
+                setCheckedIngredient(newCheckedIngredients);
+            } else {
+                newCheckedIngredients = checkedIngredients;
             }
         } else {
             if (checkedIngredients.includes(name)) {
-                const ingredientIndexToRemove = checkedIngredients.findIndex(
-                    (item) => item === name
+                newCheckedIngredients = checkedIngredients.filter(
+                    (item) => item !== name
                 );
-                const newIngredientsArray = [
-                    ...checkedIngredients.slice(0, ingredientIndexToRemove),
-                    ...checkedIngredients.slice(ingredientIndexToRemove + 1),
-                ];
-
-                setCheckedIngredient(newIngredientsArray);
+                setCheckedIngredient(newCheckedIngredients);
+            } else {
+                newCheckedIngredients = checkedIngredients;
             }
         }
-        console.log(checkedIngredients);
+
+        setSelectedIngredients(newCheckedIngredients);
     };
 
     return (

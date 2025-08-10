@@ -7,6 +7,7 @@ interface Prop {
     color?: string;
     textColor?: string;
     icon?: ReactElement;
+    style?: object;
 }
 
 export default function AppButton({
@@ -15,10 +16,11 @@ export default function AppButton({
     color = Colors.GREY100,
     textColor = Colors.GREY500,
     icon,
+    style,
 }: PropsWithChildren & Prop) {
     return (
         <TouchableOpacity
-            style={[styles.buttonContainer, { backgroundColor: color }]}
+            style={[styles.buttonContainer, { backgroundColor: color }, style]}
             onPress={onPress}
         >
             {icon}
@@ -33,7 +35,6 @@ const styles = StyleSheet.create({
     buttonContainer: {
         height: 50,
         borderRadius: 20,
-        marginBottom: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-evenly',

@@ -4,6 +4,8 @@ import { createContext, useContext } from 'react';
 type RecipeContextType = {
     recipe: Recipe;
     isLiked: boolean;
+    selectedIngredients?: string[];
+    setSelectedIngredients: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export const RecipeContext = createContext<RecipeContextType | null>(null);

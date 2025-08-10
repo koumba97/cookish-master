@@ -36,6 +36,9 @@ export default function RecipeLayout() {
     const [loadingLike, setLoadingLike] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const [recipe, setRecipe] = useState<Recipe>({} as Recipe);
+    const [selectedIngredients, setSelectedIngredients] = useState<string[]>(
+        []
+    );
     const [route, setRoute] = useState<string[]>([]);
     const pathname = usePathname();
     const currentRoute = pathname.split('/').filter((item) => item !== '');
@@ -79,7 +82,14 @@ export default function RecipeLayout() {
     }
 
     return (
-        <RecipeContext.Provider value={{ recipe, isLiked }}>
+        <RecipeContext.Provider
+            value={{
+                recipe,
+                isLiked,
+                selectedIngredients,
+                setSelectedIngredients,
+            }}
+        >
             <ScrollView>
                 <ImageBackground
                     source={{ uri: recipe.image }}
@@ -212,6 +222,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: screenWidth - 20 * 2,
+        marginBottom: 20,
     },
     recipeImg: {
         width: screenWidth,

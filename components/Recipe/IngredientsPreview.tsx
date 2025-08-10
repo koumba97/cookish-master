@@ -69,9 +69,6 @@ export default function IngredientsPreview({ ingredients, recipeId }: Prop) {
                             >
                                 {ingredient.name}
                             </AppText>
-                            {/* <AppText style={styles.measureText}>
-                            {ingredient.measure}
-                        </AppText> */}
                         </View>
                     </View>
                 ))}
