@@ -9,5 +9,11 @@ export enum Colors {
     GREY400 = '#494949',
     GREY500 = '#2C2C2C',
 
+    BLUE100 = '#BFECF9',
+    BLUE200 = '#81CFFF',
+    BLUE300 = '#4D97FF',
+    BLUE400 = '#2B77E1',
+    BLUE500 = '#1D3DA9',
+
     DEFAULTTEXT = '#494949',
 }

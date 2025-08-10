@@ -4,6 +4,7 @@ import { getIngredientImage } from '@/hooks/useIngredientImage';
 import { ingredient } from '@/types/Recipe';
 import { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet, View } from 'react-native';
+import Checkbox from '../ui/CheckBox';
 
 interface Prop {
     ingredients: ingredient[];
@@ -14,6 +15,7 @@ export default function FullIngredientsList({
     selectable = false,
 }: Prop) {
     const [ingredientImages, setIngredientImages] = useState<string[]>([]);
+    const [checkedIngredients, setCheckedIngredient] = useState<string[]>([]);
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -28,26 +30,60 @@ export default function FullIngredientsList({
         fetchImages();
     }, [ingredients]);
 
+    const handleIngredientCheck = (name: string, checked: boolean) => {
+        console.log(name, checked);
+
+        if (checked) {
+            if (!checkedIngredients.includes(name)) {
+                const ingredientsArray = [...checkedIngredients, name];
+                setCheckedIngredient(ingredientsArray);
+            }
+        } else {
+            if (checkedIngredients.includes(name)) {
+                const ingredientIndexToRemove = checkedIngredients.findIndex(
+                    (item) => item === name
+                );
+                const newIngredientsArray = [
+                    ...checkedIngredients.slice(0, ingredientIndexToRemove),
+                    ...checkedIngredients.slice(ingredientIndexToRemove + 1),
+                ];
+
+                setCheckedIngredient(newIngredientsArray);
+            }
+        }
+        console.log(checkedIngredients);
+    };
+
     return (
         <View style={styles.ingredientsContainer}>
             {ingredients.map((ingredient, index) => (
                 <View style={styles.ingredientContainer} key={index}>
-                    {selectable ? <View style={styles.checkbox} /> : null}
-                    <ImageBackground
-                        source={{
-                            uri: ingredientImages[index],
-                        }}
-                        style={styles.ingredientImg}
-                        imageStyle={{ borderRadius: 20 }}
-                    />
-                    <View style={styles.ingredientTextsWrapper}>
-                        <AppText style={styles.ingredientText}>
-                            {ingredient.name}
-                        </AppText>
-                        <AppText style={styles.measureText}>
-                            {ingredient.measure}
-                        </AppText>
+                    <View style={styles.imgTextWrapper}>
+                        <ImageBackground
+                            source={{
+                                uri: ingredientImages[index],
+                            }}
+                            style={styles.ingredientImg}
+                            imageStyle={{ borderRadius: 20 }}
+                        />
+                        <View style={styles.ingredientTextsWrapper}>
+                            <AppText style={styles.ingredientText}>
+                                {ingredient.name}
+                            </AppText>
+                            <AppText style={styles.measureText}>
+                                {ingredient.measure}
+                            </AppText>
+                        </View>
                     </View>
+                    {selectable ? (
+                        <Checkbox
+                            checked={checkedIngredients.includes(
+                                ingredient.name
+                            )}
+                            onCheck={handleIngredientCheck}
+                            name={ingredient.name}
+                        />
+                    ) : null}
                 </View>
             ))}
         </View>
@@ -60,6 +96,11 @@ const styles = StyleSheet.create({
         height: 300,
         marginBottom: 20,
     },
+    imgTextWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+    },
     ingredientsContainer: {
         gap: 10,
     },
@@ -67,6 +108,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 10,
         alignItems: 'center',
+        justifyContent: 'space-between',
     },
     ingredientImg: {
         width: 70,
