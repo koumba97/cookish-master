@@ -1,4 +1,6 @@
+import CloseSVG from '@/components/svg/Close';
 import StarSVG from '@/components/svg/Star';
+import AppButton from '@/components/ui/AppButton';
 import AppText from '@/components/ui/AppText';
 import BackButton from '@/components/ui/BackButton';
 import LikeButton from '@/components/ui/LikeButton';
@@ -8,7 +10,7 @@ import { recipeIsLiked, toggleLikeRecipe } from '@/hooks/useLikeRecipe';
 import { useRecipeIngredients } from '@/hooks/useRecipeIngredients';
 import { Recipe } from '@/types/Recipe';
 import axios from 'axios';
-import { Slot, useLocalSearchParams } from 'expo-router';
+import { router, Slot, useLocalSearchParams, usePathname } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
     ImageBackground,
@@ -30,6 +32,9 @@ export default function RecipeLayout() {
     const [loadingLike, setLoadingLike] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const [recipe, setRecipe] = useState<Recipe>({} as Recipe);
+    const [route, setRoute] = useState<string[]>([]);
+    const pathname = usePathname();
+    const currentRoute = pathname.split('/').filter((item) => item !== '');
 
     useEffect(() => {
         const initialize = async () => {
@@ -41,6 +46,10 @@ export default function RecipeLayout() {
         };
         initialize();
     }, [recipeId]);
+
+    useEffect(() => {
+        setRoute(currentRoute);
+    }, [pathname]);
 
     const fetchRecipe = async (recipeId: string) => {
         try {
@@ -64,6 +73,10 @@ export default function RecipeLayout() {
     if (loadingLike || loadingRecipe) {
         return <Text>loading</Text>;
     }
+
+    const handleCancelIngredientsSelect = () => {
+        router.setParams({ action: 'view' });
+    };
     return (
         <RecipeContext.Provider value={{ recipe, isLiked }}>
             <ScrollView>
@@ -87,13 +100,51 @@ export default function RecipeLayout() {
                         </View>
                     </View>
                 </ImageBackground>
+
                 <Slot />
             </ScrollView>
+
+            {route[2] == 'select' ? (
+                <ScrollView
+                    style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        right: 20,
+                        alignSelf: 'flex-end',
+                    }}
+                >
+                    <AppButton
+                        color="#F63C3C"
+                        textColor="white"
+                        onPress={handleCancelIngredientsSelect}
+                        icon={
+                            <CloseSVG
+                                width={25}
+                                height={25}
+                                viewBox="0 -2 150 150"
+                                color="white"
+                            />
+                        }
+                    >
+                        Cancel
+                    </AppButton>
+                </ScrollView>
+            ) : null}
         </RecipeContext.Provider>
     );
 }
 
 const styles = StyleSheet.create({
+    cancelButton: {
+        height: 50,
+        backgroundColor: '#4D97FF',
+        borderRadius: 20,
+        marginBottom: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingLeft: 20,
+    },
     recipeImg: {
         width: screenWidth,
         height: 400,

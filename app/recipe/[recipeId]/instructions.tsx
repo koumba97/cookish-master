@@ -1,7 +1,9 @@
 import CalendarButton from '@/components/Recipe/CalendarButton';
 import IngredientsPreview from '@/components/Recipe/IngredientsPreview';
-import VideoButton from '@/components/Recipe/VideoButton';
+import PlaySVG from '@/components/svg/Play';
+import AppButton from '@/components/ui/AppButton';
 import AppText from '@/components/ui/AppText';
+import { Colors } from '@/constants/Colors';
 import { useRecipeContext } from '@/contexts/RecipeContext';
 import { useLocalSearchParams } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
@@ -24,9 +26,24 @@ export default function RecipeInstructionsScreen() {
             </View>
 
             <View style={styles.buttonsWrapper}>
-                <CalendarButton isSmall={recipe.youtubeLink ? true : false} />
+                <CalendarButton
+                    isSmall={recipe.youtubeLink ? true : false}
+                    recipeId={recipeId}
+                />
                 {recipe.youtubeLink ? (
-                    <VideoButton link={recipe.youtubeLink} />
+                    <AppButton
+                        icon={
+                            <PlaySVG
+                                width={25}
+                                height={25}
+                                viewBox="0 0 25 25"
+                                color={Colors.GREY500}
+                            />
+                        }
+                        link={recipe.youtubeLink}
+                    >
+                        Watch the video
+                    </AppButton>
                 ) : null}
             </View>
 

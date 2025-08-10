@@ -1,8 +1,8 @@
+import { AddToCalendar } from '@/components/Recipe/CalendarButton';
 import FullIngredientsList from '@/components/Recipe/FullIngredientsList';
 import AppText from '@/components/ui/AppText';
 import { useRecipeContext } from '@/contexts/RecipeContext';
 import { useLocalSearchParams } from 'expo-router';
-import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 export default function RecipeIngredientsScreen() {
@@ -12,17 +12,17 @@ export default function RecipeIngredientsScreen() {
         action: 'view' | 'select';
     }>();
 
-    useEffect(() => {
-        console.log(action);
-    }, []);
-
     return (
         <View style={styles.recipeContainer}>
             <AppText style={styles.recipeName}>{recipe.name}</AppText>
             <AppText style={styles.ingredientTitle}>Ingredients</AppText>
+            <AddToCalendar />
             <View style={styles.ingredientsContainer}>
                 {recipe.ingredients ? (
-                    <FullIngredientsList ingredients={recipe.ingredients} />
+                    <FullIngredientsList
+                        ingredients={recipe.ingredients}
+                        selectable={action === 'select' ? true : false}
+                    />
                 ) : null}
             </View>
         </View>
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         minHeight: 500,
+        flex: 1,
     },
 
     ingredientsContainer: {

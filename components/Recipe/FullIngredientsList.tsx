@@ -7,8 +7,12 @@ import { ImageBackground, StyleSheet, View } from 'react-native';
 
 interface Prop {
     ingredients: ingredient[];
+    selectable?: boolean;
 }
-export default function FullIngredientsList({ ingredients }: Prop) {
+export default function FullIngredientsList({
+    ingredients,
+    selectable = false,
+}: Prop) {
     const [ingredientImages, setIngredientImages] = useState<string[]>([]);
 
     useEffect(() => {
@@ -28,6 +32,7 @@ export default function FullIngredientsList({ ingredients }: Prop) {
         <View style={styles.ingredientsContainer}>
             {ingredients.map((ingredient, index) => (
                 <View style={styles.ingredientContainer} key={index}>
+                    {selectable ? <View style={styles.checkbox} /> : null}
                     <ImageBackground
                         source={{
                             uri: ingredientImages[index],
@@ -81,5 +86,10 @@ const styles = StyleSheet.create({
     },
     measureText: {
         fontSize: 14,
+    },
+    checkbox: {
+        width: 40,
+        height: 40,
+        borderWidth: 2,
     },
 });
