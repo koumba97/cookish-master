@@ -91,7 +91,7 @@ export default function IconButton({
                             viewBox="0 0 16 16"
                             color={active ? 'white' : Colors.GREY400}
                         />
-                    ) : category === 'drink' ? (
+                    ) : category === 'side' ? (
                         <DrinkSVG
                             width={40}
                             height={40}

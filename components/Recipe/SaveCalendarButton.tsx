@@ -48,7 +48,7 @@ export default function SaveCalendarButton({ date, saved }: Prop) {
             notes: selectedIngredients?.join(', '),
         });
 
-        alert('Événement ajouté ✅');
+        alert('The recipe has been successfully added to your calendar! ✅');
         saved();
         router.back();
     }

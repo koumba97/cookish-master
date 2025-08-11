@@ -1,1 +1,1 @@
-export type Category = 'popular' | 'starter' | 'main' | 'dessert' | 'drink';
+export type Category = 'popular' | 'starter' | 'main' | 'side' | 'dessert';

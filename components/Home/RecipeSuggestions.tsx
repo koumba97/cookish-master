@@ -1,35 +1,25 @@
 import AppText from '@/components/ui/AppText';
+import { categoryTitle, indexRecipes } from '@/constants/Category';
 import { Colors } from '@/constants/Colors';
 import { SCREEN_PADDING, screenWidth } from '@/constants/Dimensions';
 import { Category } from '@/types/Category';
 import { StyleSheet, View } from 'react-native';
+import RecipeCard from './RecipeCard';
 
 interface Prop {
     currentCategory: Category;
 }
 export default function RecipeSuggestions({ currentCategory }: Prop) {
     const GRID_GAP = 10;
-
-    const categoryTitle = {
-        popular: 'Most Loved Recipes',
-        starter: 'Tasty Starters',
-        main: 'Delicious Main Courses',
-        dessert: 'Sweet Treats & Desserts',
-        drink: 'Refreshing Drinks',
-    };
-
     return (
         <View>
             <AppText style={styles.pageTitle}>
                 {categoryTitle[currentCategory]}
             </AppText>
             <View style={styles.grid}>
-                <View style={styles.recipeContainer}></View>
-                <View style={styles.recipeContainer}></View>
-                <View style={styles.recipeContainer}></View>
-                <View style={styles.recipeContainer}></View>
-                <View style={styles.recipeContainer}></View>
-                <View style={styles.recipeContainer}></View>
+                {indexRecipes[currentCategory].map((recipeId) => {
+                    return <RecipeCard recipeId={recipeId} key={recipeId} />;
+                })}
             </View>
         </View>
     );

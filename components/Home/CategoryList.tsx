@@ -28,7 +28,7 @@ export default function CategoryList({
     const handleCategory = (selectedCategory: Category) => {
         setCategory(selectedCategory);
         onCategoryChange(selectedCategory);
-        if (selectedCategory === 'drink') {
+        if (selectedCategory === 'dessert') {
             scrollToEnd();
         }
         if (selectedCategory === 'popular') {
