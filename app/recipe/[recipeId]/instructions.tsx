@@ -15,10 +15,7 @@ export default function RecipeInstructionsScreen() {
 
     return (
         <View style={styles.recipeContainer}>
-            <AppText style={styles.recipeName}>
-                {recipe.name}
-                {recipeId}
-            </AppText>
+            <AppText style={styles.recipeName}>{recipe.name}</AppText>
             <View style={styles.ingredientsContainer}>
                 {recipe.ingredients ? (
                     <IngredientsPreview

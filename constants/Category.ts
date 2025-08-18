@@ -20,7 +20,7 @@ type CategoryRecipe = {
     [K in Category]: string[];
 };
 export const indexRecipes: CategoryRecipe = {
-    popular: ['52796', '52775', '52898', '52854', '53034', '52935'],
+    popular: ['52796', '52775', '53034', '52898', '52854', '52935'],
     starter: [
         '52779',
         '52852',
@@ -51,6 +51,7 @@ export const indexRecipes: CategoryRecipe = {
         '52833',
         '52891',
         '52888',
+        '52892',
         '52909',
         '53015',
         '52931',
