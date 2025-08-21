@@ -9,14 +9,17 @@
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
         "ios": {
-            "supportsTablet": true
+            "supportsTablet": true,
+            "bundleIdentifier": "com.anonymous.cookishmaster",
+            "deploymentTarget": "17.0"
         },
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/splash-icon.png",
                 "backgroundColor": "#ffffff"
             },
-            "edgeToEdgeEnabled": true
+            "edgeToEdgeEnabled": true,
+            "package": "com.anonymous.cookishmaster"
         },
         "web": {
             "bundler": "metro",
@@ -31,7 +34,7 @@
                     "image": "./assets/images/splash-icon.png",
                     "imageWidth": 200,
                     "resizeMode": "contain",
-                    "backgroundColor": "#ffffff"
+                    "backgroundColor": "#ff937c"
                 }
             ]
         ],

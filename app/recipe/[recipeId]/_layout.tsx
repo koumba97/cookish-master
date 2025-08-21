@@ -180,21 +180,24 @@ function IngredientsScreenButtons({
                         </AppButton>
                     </View>
                 ) : route[2] === 'view' ? (
-                    <AppButton
-                        color="#4D97FF"
-                        textColor="white"
-                        onPress={goToSelectScreen}
-                        icon={
-                            <CalendarSVG
-                                width={30}
-                                height={30}
-                                viewBox={'0 0 18 18'}
-                                color="white"
-                            />
-                        }
-                    >
-                        Add to calendar
-                    </AppButton>
+                    <View style={styles.ingredientsButtonsWrapper}>
+                        <View></View>
+                        <AppButton
+                            color="#4D97FF"
+                            textColor="white"
+                            onPress={goToSelectScreen}
+                            icon={
+                                <CalendarSVG
+                                    width={30}
+                                    height={30}
+                                    viewBox={'0 0 18 18'}
+                                    color="white"
+                                />
+                            }
+                        >
+                            Add to calendar
+                        </AppButton>
+                    </View>
                 ) : null
             ) : null}
 
